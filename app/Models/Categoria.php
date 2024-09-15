@@ -15,4 +15,9 @@ class Categoria extends Model
     {
         return $this->morphMany(Imagen::class, 'imageable');
     }
+
+    public function productos()
+    {
+        return $this->hasMany(Producto::class);
+    }
 }

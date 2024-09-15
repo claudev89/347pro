@@ -5,19 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Marca extends Model
+class Orden extends Model
 {
-    public $timestamps = false;
-
     use HasFactory;
 
-    public function imagenes()
+    public function usuario()
     {
-        return $this->morphMany(Imagen::class, 'imageable');
+        return $this->belongsTo(User::class);
     }
 
     public function productos()
     {
-        return $this->hasMany(Producto::class);
+        return $this->belongsToMany(Producto::class);
     }
 }
