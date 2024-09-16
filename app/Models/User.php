@@ -76,4 +76,9 @@ class User extends Authenticatable
             Producto::class, 'productos_guardados', 'producto_id', 'user_id'
         );
     }
+
+    public function direcciones()
+    {
+        return $this->hasMany(Direccion::class);
+    }
 }
