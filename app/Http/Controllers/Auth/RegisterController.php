@@ -52,6 +52,11 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'telefono' => ['required', 'numeric', 'digits:8'],
+        ], [
+            'telefono.required' => 'El campo teléfono es obligatorio.',
+            'telefono.numeric' => 'El teléfono debe ser un número.',
+            'telefono.digits' => 'El teléfono debe contener exactamente 8 dígitos.',
         ]);
     }
 
@@ -67,6 +72,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'telefono' => $data['telefono'],
         ]);
     }
 }
