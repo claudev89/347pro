@@ -1,4 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    Hola
+    <main class="container">
+        @include('carrusel-principal')
+    </main>
 @endsection
