@@ -88,15 +88,17 @@
                 <div>
                     <div class="input-group">
                         <span class="input-group-text" id="search-icon"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Buscar en el catálogo" aria-label="Buscar" aria-describedby="search-icon">
+                        <input type="search" class="form-control" placeholder="Buscar en el catálogo" aria-label="Buscar" aria-describedby="search-icon">
                     </div>
                 </div>
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-3">
             @yield('content')
         </main>
     </div>
+
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>
