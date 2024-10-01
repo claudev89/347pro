@@ -1,4 +1,4 @@
-<div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3 mb-3">
+<div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3 mb-3 d-flex justify-content-center">
     <div class="card" style="width: 18rem;" x-data="{ vistaPrevia: false }" x-on:mouseover="vistaPrevia = true" x-on:mouseleave="vistaPrevia = false">
         <div class="position-relative">
                             <span class="badge text-bg-primary position-absolute top-0 start-0 pb-0 mt-2 ms-1 text-white pt-2 pb-1">

@@ -6,16 +6,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-10 col-lg-5 mb-3">
                         <img src="{{ $imagen }}" class="w-100" alt="{{ $titulo }}">
                     </div>
-                    <div class="col-1">
+                    <div class="col-2 col-lg-1">
                         <img src="{{ $imagen }}" class="img-fluid mb-2 border border-4 border-primary" alt="{{ $titulo }}">
                         <img src="{{ $imagen }}" class="img-fluid mb-2" alt="{{ $titulo }}">
                         <img src="{{ $imagen }}" class="img-fluid mb-2" alt="{{ $titulo }}">
                         <img src="{{ $imagen }}" class="img-fluid mb-2" alt="{{ $titulo }}">
                     </div>
-                    <div class="col-6">
+                    <div class="col-12 col-lg-6">
                         <h4 class="text-uppercase fw-bold">{{ $titulo }}</h4>
                         <span class="text-primary fw-bold">${{ number_format($precio, 0, ',', '.') }}</span>
 
@@ -48,10 +48,46 @@
             <hr>
             <div class="pb-3 px-3 fs-5 text-center">
                 Compartir
-                <a href="#facebook" x-data="{ hover: false }" @mouseover="hover = true" @mouseout="hover = false" :class="{ 'text-primary': hover }" class="btn rounded-circle p-0 border-0" style="width: 40px; height: 40px;"><i class="bi bi-facebook fs-3"></i></a>
-                <a href="#twitter" x-data="{ hover: false }" @mouseover="hover = true" @mouseout="hover = false" :class="{ 'text-primary': hover }" class="btn rounded-circle p-0 border-0" style="width: 40px; height: 40px;"><i class="bi bi-twitter-x fs-3"></i></a>
-                <a href="#instagram" x-data="{ hover: false }" @mouseover="hover = true" @mouseout="hover = false" :class="{ 'text-primary': hover }" class="btn rounded-circle p-0 border-0" style="width: 40px; height: 40px;"><i class="bi bi-instagram fs-3"></i></a>
-                <a href="#whatsapp" x-data="{ hover: false }" @mouseover="hover = true" @mouseout="hover = false" :class="{ 'text-primary': hover }" class="btn rounded-circle p-0 border-0" style="width: 40px; height: 40px;"><i class="bi bi-whatsapp fs-3"></i></a>
+                <a
+                    href="#facebook"
+                    x-data="{ hover: false }"
+                    @mouseover="hover = true"
+                    @mouseout="hover = false"
+                    :class="{ 'text-primary': hover }"
+                    class="btn rounded-circle p-0 border-0"
+                    style="width: 40px; height: 40px;">
+                    <i class="bi bi-facebook fs-3"></i>
+                </a>
+                <a
+                    href="#twitter"
+                    x-data="{ hover: false }"
+                    @mouseover="hover = true"
+                    @mouseout="hover = false"
+                    :class="{ 'text-primary': hover }"
+                    class="btn rounded-circle p-0 border-0"
+                    style="width: 40px; height: 40px;">
+                    <i class="bi bi-twitter-x fs-3"></i>
+                </a>
+                <a
+                    href="#instagram"
+                    x-data="{ hover: false }"
+                    @mouseover="hover = true"
+                    @mouseout="hover = false"
+                    :class="{ 'text-primary': hover }"
+                    class="btn rounded-circle p-0 border-0"
+                    style="width: 40px; height: 40px;">
+                    <i class="bi bi-instagram fs-3"></i>
+                </a>
+                <a
+                    href="#whatsapp"
+                    x-data="{ hover: false }"
+                    @mouseover="hover = true"
+                    @mouseout="hover = false"
+                    :class="{ 'text-primary': hover }"
+                    class="btn rounded-circle p-0 border-0"
+                    style="width: 40px; height: 40px;">
+                    <i class="bi bi-whatsapp fs-3"></i>
+                </a>
             </div>
         </div>
     </div>
