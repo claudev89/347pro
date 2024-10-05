@@ -18,4 +18,9 @@ class Orden extends Model
     {
         return $this->belongsToMany(Producto::class);
     }
+
+    public function boleta()
+    {
+        return $this->belongsTo(Boleta::class);
+    }
 }
