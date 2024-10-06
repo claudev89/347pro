@@ -25,9 +25,9 @@ class Categoria extends Model
         });
     }
 
-    public function imagenes()
+    public function imagen()
     {
-        return $this->morphMany(Imagen::class, 'imageable');
+        return $this->morphOne(Imagen::class, 'imageable');
     }
 
     public function productos()
@@ -35,7 +35,7 @@ class Categoria extends Model
         return $this->hasMany(Producto::class);
     }
 
-    public function categoriasHijas()
+    public function subcategorias()
     {
         return $this->hasMany(Categoria::class, 'categoriaPadre', 'id');
     }
