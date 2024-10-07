@@ -14,11 +14,10 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Str;
 
 class CategoriasHijasRelationManager extends RelationManager
@@ -33,30 +32,40 @@ class CategoriasHijasRelationManager extends RelationManager
             ->schema([
                 Section::make()
                     ->schema([
-                        Group::make([
-                            TextInput::make('nombre')
-                                ->required()
-                                ->autofocus()
-                                ->columnSpan(2)
-                                ->minLength(3)
-                                ->live(onBlur: true)
-                                ->afterStateUpdated( function ( string $operation, ?string $state, Forms\Set $set)
-                                {
-                                    if ( $operation === 'edit') { return ;}
-                                    $set ('slug', Str::slug($state));
-                                })
-                            ,
-                            TextInput::make('slug')->required()->minLength(1)->unique(ignoreRecord: true),
-                        ])->columns(3),
+                        TextInput::make('nombre')
+                            ->required()
+                            ->autofocus()
+                            ->columnSpan(2)
+                            ->minLength(3)
+                            ->maxLength(200)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated( function ( string $operation, ?string $state, Forms\Set $set)
+                            {
+                                if ( $operation === 'edit') { return ;}
+                                $set ('slug', Str::slug($state));
+                            }),
 
-                        Group::make([
-//                            RichEditor::make('descripcion')->label('Descripción')
-//                                ->disableToolbarButtons(['codeBlock', 'attachFiles'])->columnSpan(2)->maxLength(1024),
-                            FileUpload::make('descripcion')
-                                ->image()
-                                ->imageEditor(),
-                        ])->columns(3),
-                    ]),
+                        TextInput::make('slug')
+                            ->required()
+                            ->minLength(1)
+                            ->maxLength(200)
+                            ->unique(ignoreRecord: true),
+
+                        FileUpload::make('imagen')
+                            ->image()
+                            ->imageEditor()
+                            ->disk('public')
+                            ->directory('imagenes/categorias')
+                            ->openable()
+                            ->downloadable(),
+
+                        RichEditor::make('descripcion')
+                            ->label('Descripción')
+                            ->disableToolbarButtons(['codeBlock', 'attachFiles'])
+                            ->maxLength(1024)
+                            ->columnSpan(2),
+                    ])
+                    ->columns(2)
             ])->columns(3);
     }
 
@@ -65,7 +74,9 @@ class CategoriasHijasRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('nombre')
             ->columns([
-                TextColumn::make('nombre'),
+                TextColumn::make('nombre')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('descripcion')
                     ->markdown()
                     ->weight(FontWeight::Light)
@@ -77,6 +88,7 @@ class CategoriasHijasRelationManager extends RelationManager
                     ->placeholder(0)
                     ->alignEnd()
                     ->label('Productos'),
+                ImageColumn::make('imagen'),
             ])
             ->filters([
                 //

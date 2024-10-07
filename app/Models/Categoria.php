@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Categoria extends Model
 {
@@ -11,7 +12,8 @@ class Categoria extends Model
 
     public $hidden = ['id'];
 
-    public $fillable = ['nombre', 'slug', 'descripcion', 'categoriaPadre', 'posicion'];
+    public $fillable = ['nombre', 'slug', 'descripcion', 'categoriaPadre', 'posicion', 'imagen'];
+
 
     use HasFactory;
 
@@ -23,11 +25,6 @@ class Categoria extends Model
             $maxPosition = static::max('posicion');
             $model->posicion = $maxPosition ? $maxPosition + 1: 1;
         });
-    }
-
-    public function imagen()
-    {
-        return $this->morphOne(Imagen::class, 'imageable');
     }
 
     public function productos()
@@ -44,4 +41,28 @@ class Categoria extends Model
     {
         return $this->belongsTo(Categoria::class, 'categoriaPadre', 'id');
     }
+
+    public static function categoriaMasVista()
+    {
+        $categoriamasVista = Producto::with('categoria')
+            ->groupBy('categoria_id')
+            ->selectRaw('categoria_id, sum(visitas) as total_visitas')
+            ->orderBy('total_visitas', 'desc')
+            ->first();
+
+        return $categoriamasVista ? $categoriamasVista->categoria->nombre : "Ninguna";
+    }
+
+    public static function productosPorCategoria()
+    {
+        $promedios = Producto::select('categoria_id', DB::raw('count(*) as total_productos'))
+            ->groupBy('categoria_id')
+            ->get();
+
+        $promedio = $promedios->avg('total_productos') ? $promedios->avg('total_productos') : 'Aún no hay productos';
+
+        return $promedio;
+    }
+
+
 }

@@ -9,11 +9,6 @@ class Producto extends Model
 {
     use HasFactory;
 
-    public function imagenes()
-    {
-        return $this->morphMany(Imagen::class, 'imageable');
-    }
-
     public function marca()
     {
         return $this->belongsTo(Marca::class);
@@ -39,5 +34,10 @@ class Producto extends Model
         return $this->belongsToMany(
             User::class, 'productos_guardados', 'producto_id', 'user_id'
         );
+    }
+
+    public function imagenes()
+    {
+        return $this->hasMany(ImagenProducto::class);
     }
 }

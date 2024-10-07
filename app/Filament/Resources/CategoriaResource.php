@@ -4,8 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoriaResource\Pages;
 use App\Filament\Resources\CategoriaResource\RelationManagers;
+use App\Filament\Resources\CategoriaResource\Widgets\CategoriasVacias;
 use App\Models\Categoria;
-use App\Models\Imagen;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,27 +13,21 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
-use Filament\Forms\Components\Hidden;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Filament\Forms\Components\Placeholder;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Filters\Filter;
 
 
 class CategoriaResource extends Resource
 {
     protected static ?string $model = Categoria::class;
-
 
     protected static ?string $label = 'Categorías';
     protected static ?string $navigationGroup = 'Catálogo';
@@ -51,6 +45,7 @@ class CategoriaResource extends Resource
                             ->autofocus()
                             ->columnSpan(2)
                             ->minLength(3)
+                            ->maxLength(200)
                             ->live(onBlur: true)
                             ->afterStateUpdated( function ( string $operation, ?string $state, Forms\Set $set)
                             {
@@ -58,7 +53,11 @@ class CategoriaResource extends Resource
                                 $set ('slug', Str::slug($state));
                             }),
 
-                        TextInput::make('slug')->required()->minLength(1)->unique(ignoreRecord: true),
+                        TextInput::make('slug')
+                            ->required()
+                            ->minLength(1)
+                            ->maxLength(200)
+                            ->unique(ignoreRecord: true),
 
                         Select::make('categoriaPadre')
                             ->label('Categoría padre')
@@ -76,35 +75,13 @@ class CategoriaResource extends Resource
 
                 Section::make()
                     ->schema([
-                        Placeholder::make('imagen')
-                            ->content(function ($record): HtmlString {
-                                if($record->imagen)
-                                {
-                                    return new HtmlString("<img src='". asset('storage/'. $record->imagen->ruta) . "')>");
-                                }
-                                return new HtmlString('');
-                            }),
                         FileUpload::make('imagen')
                             ->image()
                             ->imageEditor()
-                            ->getUploadedFileNameForStorageUsing(function ($record) {
-                                if ($record->imagen) {
-                                    return asset('storage/' . $record->imagen->ruta);
-                                }
-                                return null;
-                            })
-                            ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, $record) {
-                                if ($record->imagen) {
-                                    Storage::disk('public')->delete($record->imagen->ruta);
-                                    $record->imagen->delete();
-                                }
-                                $ruta = $file->store('imagenes/categorias', 'public');
-                                $imagen = new Imagen();
-                                $imagen->ruta = $ruta;
-                                $imagen->imageable()->associate($record);
-                                $imagen->save();
-                                return $ruta;
-                            })
+                            ->disk('public')
+                            ->directory('imagenes/categorias')
+                            ->openable()
+                            ->downloadable()
                     ])
                     ->columnSpan(['lg' => 1])
                     ->hidden(fn (?Categoria $record) => $record === null),
@@ -117,8 +94,9 @@ class CategoriaResource extends Resource
         return $table
         ->reorderable('posicion')
         ->columns([
-            TextColumn::make('nombre'),
+            TextColumn::make('nombre')->sortable()->searchable(),
             TextColumn::make('descripcion')
+                ->searchable()
                 ->markdown()
                 ->weight(FontWeight::Light)
                 ->lineClamp(1)
@@ -135,14 +113,24 @@ class CategoriaResource extends Resource
                 ->alignEnd()
                 ->label('Subcategorías'),
             TextInputColumn::make('posicion')
+                ->searchable()
                 ->rules(['numeric', 'max:9999'])
                 ->label('Posición')
+                ->sortable()
                 ->afterStateUpdated(function ($record, $state) {
                     $record->posicion = $state;
                     $record->save();
                 }),
+            ImageColumn::make('imagen'),
         ])
             ->filters([
+                Filter::make('con_productos')
+                    ->label('Con productos')
+                    ->query(fn (Builder $query) => $query->has('productos')),
+
+                Filter::make('sin_productos')
+                    ->label('Sin productos')
+                    ->query(fn (Builder $query) => $query->doesntHave('productos')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -178,5 +166,11 @@ class CategoriaResource extends Resource
         ];
     }
 
+    public static function getWidgets(): array
+    {
+        return parent::getWidgets([
+            CategoriasVacias::class,
+        ]);
+    }
 
 }
