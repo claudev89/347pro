@@ -29,7 +29,7 @@ class CategoriaResource extends Resource
 {
     protected static ?string $model = Categoria::class;
 
-    protected static ?string $label = 'Categorías';
+    protected static ?string $label = 'Categoría';
     protected static ?string $navigationGroup = 'Catálogo';
 
     protected static ?int $navigationSort = 20;
@@ -71,7 +71,7 @@ class CategoriaResource extends Resource
                             ->columnSpan(2),
                     ])
                     ->columns(2)
-                    ->columnSpan(['lg' => fn (?Categoria $record) => $record === null ? 3 : 2]),
+                    ->columnSpan(['lg' => 2]),
 
                 Section::make()
                     ->schema([
@@ -84,7 +84,6 @@ class CategoriaResource extends Resource
                             ->downloadable()
                     ])
                     ->columnSpan(['lg' => 1])
-                    ->hidden(fn (?Categoria $record) => $record === null),
             ])
             ->columns(3);
     }
