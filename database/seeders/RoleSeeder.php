@@ -22,10 +22,10 @@ class RoleSeeder extends Seeder
         $permission_update_product = Permission::create(['name' => 'editar producto']);
         $permission_delete_product = Permission::create(['name' => 'eliminar producto']);
 
-        $permission_create_category = Permission::create(['name' => 'crear categoria']);
-        $permission_read_category = Permission::create(['name' => 'ver categoria']);
-        $permission_update_category = Permission::create(['name' => 'editar categoria']);
-        $permission_delete_category = Permission::create(['name' => 'eliminar categoria']);
+        $permission_create_category = Permission::create(['name' => 'crear categorias']);
+        $permission_read_category = Permission::create(['name' => 'ver categorias']);
+        $permission_update_category = Permission::create(['name' => 'editar categorias']);
+        $permission_delete_category = Permission::create(['name' => 'eliminar categorias']);
 
         $permission_create_cupon = Permission::create(['name' => 'crear cupon']);
         $permission_read_cupon = Permission::create(['name' => 'ver cupon']);

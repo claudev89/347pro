@@ -1,3 +1,5 @@
+@php($categorias = \App\Models\Categoria::all()->sortBy('posicion'))
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -68,7 +70,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="logo.png" alt="{{ config('app.name', 'Laravel') }}" title="{{ config('app.name', 'Laravel') }}">
+                    <img src="/logo.png" alt="{{ config('app.name', 'Laravel') }}" title="{{ config('app.name', 'Laravel') }}">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -77,10 +79,28 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a href="#" class="nav-link text-dark text-uppercase"><strong>Máquinas</strong></a> </li>
-                        <li class="nav-item"><a href="#" class="nav-link text-dark text-uppercase"><strong>Productos para el cabello</strong></a></li>
-                        <li class="nav-item"><a href="#" class="nav-link text-dark text-uppercase"><strong>Cepillos y peinetas</strong></a></li>
-                        <li class="nav-item"><a href="#" class="nav-link text-dark text-uppercase"><strong>Afeitado</strong></a></li>
+                        @foreach($categorias as $categoria)
+                            @if(is_null($categoria->categoriaPadre) && $categoria->subcategorias->count() > 0)
+                                <li class="nav-item dropdown text-uppercase">
+                                    <a href="{{ url($categoria->slug) }}" class="nav-link dropdown-toggle" role="button">
+                                        <strong>{{ $categoria->nombre }}</strong>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        @foreach($categoria->subcategorias as $subcategoria)
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ url($categoria->slug, $subcategoria->slug) }}">
+                                                        {{ $subcategoria->nombre }}</a>
+                                                </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                <ul class="dropdown-menu"></ul>
+                            @elseif(is_null($categoria->categoriaPadre))
+                                <li class="nav-item text-uppercase">
+                                    <a class="nav-link" href="{{ url($categoria->slug) }}"><strong>{{ $categoria->nombre }}</strong></a>
+                                </li>
+                            @endif
+                        @endforeach
                     </ul>
 
 
@@ -100,5 +120,16 @@
     </div>
 
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0; /* Evita un salto al mostrar el menú */
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+    </style>
 </body>
 </html>

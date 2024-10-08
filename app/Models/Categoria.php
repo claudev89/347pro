@@ -23,7 +23,7 @@ class Categoria extends Model
 
         static::creating(function ($model) {
             $maxPosition = static::max('posicion');
-            $model->posicion = $maxPosition ? $maxPosition + 1: 1;
+            $model->posicion = $maxPosition ? $maxPosition + 1 : 1;
         });
     }
 
@@ -34,17 +34,17 @@ class Categoria extends Model
 
     public function subcategorias()
     {
-        return $this->hasMany(Categoria::class, 'categoriaPadre', 'id');
+        return $this->hasMany(Categoria::class, 'categoria_padre_id');
     }
 
     public function categoriaPadre()
     {
-        return $this->belongsTo(Categoria::class, 'categoriaPadre', 'id');
+        return $this->belongsTo(Categoria::class, 'categoria_padre_id');
     }
 
     public static function categoriaMasVista()
     {
-        $categoriamasVista = Producto::with('categoria')
+        $categoriamasVista = Producto::with('categorias')
             ->groupBy('categoria_id')
             ->selectRaw('categoria_id, sum(visitas) as total_visitas')
             ->orderBy('total_visitas', 'desc')
@@ -64,5 +64,9 @@ class Categoria extends Model
         return $promedio;
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
 }

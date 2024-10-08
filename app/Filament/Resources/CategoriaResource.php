@@ -152,7 +152,7 @@ class CategoriaResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->whereNull('categoriaPadre');
+        return parent::getEloquentQuery()->whereNull('categoria_padre_id');
     }
 
 
