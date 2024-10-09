@@ -41,7 +41,7 @@
                 <div id="navegacion" class="bg-white px-3 py-4 mb-4">
                     @if($subcategoria)
                         <h4 class="fw-bold text-uppercase">
-                            <a href="{{ url($subcategoria->slug) }}" class="text-reset" style="text-decoration: none">
+                            <a href="{{ url($categoria->slug.'/'.$subcategoria->slug) }}" class="text-reset" style="text-decoration: none">
                                 {{ $subcategoria->nombre }}
                             </a>
                         </h4>
@@ -53,7 +53,7 @@
                         </h4>
                         @foreach($categoria->subcategorias as $subcat)
                             <h5 class="fw-bold text-capitalize">
-                                <a href="{{ url($subcat->slug) }}" class="text-reset" style="text-decoration: none">
+                                <a href="{{ url($categoria->slug.'/'.$subcat->slug) }}" class="text-reset" style="text-decoration: none">
                                     {{ $subcat->nombre }}
                                 </a>
                             </h5>
@@ -73,13 +73,13 @@
 
             <div id="contenido" class="col-12 col-lg-9 col-sm-8 mb-4">
                 <div id="descripcionCategoria" class="bg-white px-3 pt-4 pb-2 mb-4">
-                    @if($subcategoria)
+                    @if($subcategoria )
                         <h3 class="text-uppercase fw-bold">{{ $subcategoria->nombre }}</h3>
                         <p>
                             {!! $subcategoria->descripcion  !!}
                         </p>
                 </div>
-                    @else
+                    @elseif($categoria->subcategorias->count()>0)
                         <h3 class="text-uppercase fw-bold">{{ $categoria->nombre }}</h3>
                         <p>
                             {!! $categoria->descripcion  !!}
@@ -102,11 +102,17 @@
                                     {{ $miniSub->nombre }}
                                 </h5>
                             </div>
-                            <a href="{{ url($miniSub->slug) }}" class="stretched-link"></a>
+                            <a href="{{ url($categoria->slug.'/'.$miniSub->slug) }}" class="stretched-link"></a>
                         </div>
                     @endforeach
                 </div>
             </div>
+            @else
+                <h3 class="text-uppercase fw-bold">{{ $categoria->nombre }}</h3>
+                <p>
+                    {!! $categoria->descripcion  !!}
+                </p>
+        </div>
                     @endif
 
 

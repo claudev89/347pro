@@ -9,15 +9,18 @@ class Marca extends Model
 {
     public $timestamps = false;
 
-    use HasFactory;
+    protected $fillable = ['nombre', 'imagen', 'slug'];
+    protected $hidden = ['id'];
 
-    public function imagenes()
-    {
-        return $this->morphMany(Imagen::class, 'imageable');
-    }
+    use HasFactory;
 
     public function productos()
     {
         return $this->hasMany(Producto::class);
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

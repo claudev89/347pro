@@ -6,6 +6,7 @@ use App\Filament\Resources\CategoriaResource\Pages;
 use App\Filament\Resources\CategoriaResource\RelationManagers;
 use App\Filament\Resources\CategoriaResource\Widgets\CategoriasVacias;
 use App\Models\Categoria;
+use App\Models\Producto;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -103,6 +104,16 @@ class CategoriaResource extends Resource
                 ->placeholder('Sin descripción.'),
             TextColumn::make('productos_count')
                 ->counts('productos')
+                ->getStateUsing(function ($record) {
+                    $subCategoriasIds = $record->subcategorias()->pluck('id');
+
+                    if($subCategoriasIds->isEmpty())
+                    {
+                        return $record->productos->count();
+                    }
+
+                    return Producto::whereIn('categoria_id', $subCategoriasIds->push($record->id))->count();
+                })
                 ->placeholder(0)
                 ->alignEnd()
                 ->label('Productos'),
