@@ -64,4 +64,15 @@ class Producto extends Model
     {
         return 'slug';
     }
+
+    public function getUrl() : string
+    {
+        if ( $this->categoria->categoriaPadre )
+        {
+            return url($this->categoria->categoriaPadre->slug . '/' . $this->categoria->slug . '/' . $this->slug);
+        }
+        else {
+            return url($this->categoria->slug . '/' . $this->slug);
+        }
+    }
 }

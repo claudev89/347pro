@@ -9,7 +9,7 @@
             <button class="btn bg-white position-absolute top-0 end-0 pb-0 mt-2 me-2 rounded-circle shadow text-body-tertiary">
                 <i class="bi bi-heart fs-3"></i>
             </button>
-            <a href="#paginaDelProducto">
+            <a href="{{ $producto->getUrl() }}">
                 <img
                     src="{{ asset('storage/'.$producto->imagenes[0]) }}"
                     class="card-img-top object-fit-contain" alt="{{ $producto->nombre }}"
