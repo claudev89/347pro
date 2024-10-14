@@ -9,6 +9,25 @@ class Producto extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['id'];
+
+    protected $fillable = [
+        'nombre',
+        'slug',
+        'precio',
+        'cantidad',
+        'marca_id',
+        'descripcion_corta',
+        'descripcion_larga',
+        'categoria_id',
+        'visitas',
+        'imagenes',
+        ];
+
+    protected $casts = [
+        'imagenes' => 'array',
+    ];
+
     public function marca()
     {
         return $this->belongsTo(Marca::class);
@@ -39,5 +58,10 @@ class Producto extends Model
     public function imagenes()
     {
         return $this->hasMany(ImagenProducto::class);
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

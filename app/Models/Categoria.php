@@ -44,7 +44,7 @@ class Categoria extends Model
 
     public static function categoriaMasVista()
     {
-        $categoriamasVista = Producto::with('categorias')
+        $categoriamasVista = Producto::with('categoria')
             ->groupBy('categoria_id')
             ->selectRaw('categoria_id, sum(visitas) as total_visitas')
             ->orderBy('total_visitas', 'desc')

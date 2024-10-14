@@ -2,23 +2,17 @@
 
 namespace App\Livewire\Includes;
 
+use App\Models\Producto;
 use Livewire\Component;
 
 class ProductoThumb extends Component
 {
-    public $props = [
-        'imagen' => '',
-        'titulo' => '',
-        'precio' => 0,
+    public $producto;
+    public $productoId;
 
-    ];
-
-    public function mount($props = [])
-    {
-        $this->props = array_merge($this->props, $props);
-    }
     public function render()
     {
-        return view('livewire.includes.producto-thumb');
+        $this->producto = Producto::find($this->productoId);
+        return view('livewire.includes.producto-thumb', ['producto' => $this->producto]);
     }
 }

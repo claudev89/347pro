@@ -5,28 +5,56 @@
                 <div id="cerrar" class="text-end">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="row">
-                    <div class="col-10 col-lg-5 mb-3">
-                        <img src="{{ $imagen }}" class="w-100" alt="{{ $titulo }}">
+                <div class="row" x-data="{ imagenPrincipal: '{{ $imagen }}', videoUrl: '' }">
+                    <div class="col-10 col-lg-5 mb-3 bg-white">
+                        <template x-if="!videoUrl">
+                            <img :src="imagenPrincipal" class="w-100 object-fit-contain" alt="{{ $titulo }}" style="height: 40rem">
+                        </template>
+                        <template x-if="videoUrl">
+                            <video x-ref="video" autoplay controls class="w-100 object-fit-contain" style="height: 40rem" :src="videoUrl"></video>
+                        </template>
                     </div>
                     <div class="col-2 col-lg-1">
-                        <img src="{{ $imagen }}" class="img-fluid mb-2 border border-4 border-primary" alt="{{ $titulo }}">
-                        <img src="{{ $imagen }}" class="img-fluid mb-2" alt="{{ $titulo }}">
-                        <img src="{{ $imagen }}" class="img-fluid mb-2" alt="{{ $titulo }}">
-                        <img src="{{ $imagen }}" class="img-fluid mb-2" alt="{{ $titulo }}">
+                        @foreach($producto->imagenes as $imagenProducto)
+                            @if(pathinfo(asset('storage/' . $imagenProducto), PATHINFO_EXTENSION) === 'mp4' ||
+                                pathinfo(asset('storage/' . $imagenProducto), PATHINFO_EXTENSION) === 'mpeg4')
+
+                                <div
+                                    class="position-relative bg-white"
+                                    @click="videoUrl = '{{ asset('storage/' . $imagenProducto) }}#t=0.1';
+                                    imagenPrincipal = ''; $refs.video.pause();
+                                    $refs.video.currentTime = 0;"
+                                    :class="videoUrl == '{{ asset('storage/' . $imagenProducto) }}#t=0.1' ?
+                                    'border border-4 border-primary' :
+                                    ''"
+                                >
+                                    <video class="w-100 object-fit-contain" style="height: 4rem;">
+                                        <source src="{{ asset('storage/' . $imagenProducto) }}#t=0.1" type="video/mp4">
+                                    </video>
+                                    <div class="position-absolute top-50 start-50 translate-middle">
+                                        <i class="bi bi-play-circle-fill" style="font-size: 2rem; color: white;"></i>
+                                    </div>
+                                </div>
+
+                                @else
+                                <img
+                                    src="{{ asset('storage/' . $imagenProducto) }}"
+                                    class="mb-2 object-fit-contain bg-white"
+                                    alt="{{ $titulo }}"
+                                    style="height: 5rem; width: 100%; cursor: pointer"
+                                    @click="imagenPrincipal = '{{ asset('storage/' . $imagenProducto) }}'; videoUrl = ''; if ($refs.video) { $refs.video.pause(); $refs.video.currentTime = 0; }"
+                                    :class="imagenPrincipal == '{{ asset('storage/' . $imagenProducto) }}' ? 'border border-4 border-primary' : ''"
+                                >
+                            @endif
+                        @endforeach
                     </div>
                     <div class="col-12 col-lg-6">
                         <h4 class="text-uppercase fw-bold">{{ $titulo }}</h4>
                         <span class="text-primary fw-bold">${{ number_format($precio, 0, ',', '.') }}</span>
 
-                        <p class="fw-bold fs-5 mt-4">Nuestro gel de afeitar transparente elimina la incertidumbre del cuidado personal. Bienvenido al futuro.</p>
-                        <ul>
-                            <li>Observa fácilmente dónde te has afeitado con el gel claro no espumante.</li>
-                            <li>Pasadas de navaja más suaves y precisas significan menos irritación y mejores resultados.</li>
-                            <li>Lubrica e hidrata la piel, dejándola con una fragancia refrescante.</li>
-                            <li>Crea una capa protectora entre la piel y la cuchilla para prevenir cortes y quemaduras de afeitar.</li>
-                            <li>Más eficiente que la crema de afeitar, por lo que es una elección económica para el hogar y el salón.</li>
-                        </ul>
+                        <p>
+                            {!! $descripcion !!}
+                        </p>
 
                         <form>
                             <label for="cantidad" class="form-label">Cantidad</label>
@@ -41,6 +69,12 @@
                                 </div>
                             </div>
                         </form>
+                        @if($stock <= 3)
+                            <span class="alert alert-warning d-inline-block mt-3">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                        Últimas unidades en stock.
+                                    </span>
+                        @endif
                     </div>
                 </div>
 
@@ -91,5 +125,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        var videoModal = document.getElementById('<?= $id ?>');
+        videoModal.addEventListener('hidden.bs.modal', function (event) {
+            var video = videoModal.querySelector('video');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
+        });
+    </script>
+
 
 </div>

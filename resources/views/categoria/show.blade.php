@@ -74,16 +74,20 @@
             <div id="contenido" class="col-12 col-lg-9 col-sm-8 mb-4">
                 <div id="descripcionCategoria" class="bg-white px-3 pt-4 pb-2 mb-4">
                     @if($subcategoria )
-                        <h3 class="text-uppercase fw-bold">{{ $subcategoria->nombre }}</h3>
-                        <p>
-                            {!! $subcategoria->descripcion  !!}
-                        </p>
+                        @include('includes.categorias-header',
+                            [
+                                'imgCat' => $subcategoria->imagen,
+                                'nomCat' => $subcategoria->nombre,
+                                'descCat' => $subcategoria->descripcion
+                                ])
                 </div>
                     @elseif($categoria->subcategorias->count()>0)
-                        <h3 class="text-uppercase fw-bold">{{ $categoria->nombre }}</h3>
-                        <p>
-                            {!! $categoria->descripcion  !!}
-                        </p>
+                    @include('includes.categorias-header',
+                       [
+                           'imgCat' => $categoria->imagen,
+                           'nomCat' => $categoria->nombre,
+                           'descCat' => $categoria->descripcion
+                           ])
             </div>
             <div id="subcategorias" class="bg-white p-3 mb-4">
                 <h3 class="">Subcategorías</h3>
@@ -108,10 +112,12 @@
                 </div>
             </div>
             @else
-                <h3 class="text-uppercase fw-bold">{{ $categoria->nombre }}</h3>
-                <p>
-                    {!! $categoria->descripcion  !!}
-                </p>
+                @include('includes.categorias-header',
+                           [
+                               'imgCat' => $categoria->imagen,
+                               'nomCat' => $categoria->nombre,
+                               'descCat' => $categoria->descripcion
+                               ])
         </div>
                     @endif
 
