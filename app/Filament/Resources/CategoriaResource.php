@@ -92,11 +92,11 @@ class CategoriaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->reorderable('posicion')
+        ->reorderable('posicion')->defaultSort('posicion')
         ->columns([
-            TextColumn::make('nombre')->sortable()->searchable(),
+            TextColumn::make('nombre')->sortable()->searchable(isIndividual: true, isGlobal: false),
             TextColumn::make('descripcion')
-                ->searchable()
+                ->searchable(isIndividual: true, isGlobal: false)
                 ->markdown()
                 ->weight(FontWeight::Light)
                 ->lineClamp(1)
@@ -123,14 +123,10 @@ class CategoriaResource extends Resource
                 ->alignEnd()
                 ->label('Subcategorías'),
             TextInputColumn::make('posicion')
-                ->searchable()
-                ->rules(['numeric', 'max:9999'])
+                ->type('number')
+                ->rules(['numeric', 'max:9999', 'min:0'])
                 ->label('Posición')
-                ->sortable()
-                ->afterStateUpdated(function ($record, $state) {
-                    $record->posicion = $state;
-                    $record->save();
-                }),
+                ->sortable(),
             ImageColumn::make('imagen'),
         ])
             ->filters([

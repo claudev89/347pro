@@ -3,7 +3,7 @@
 
     <div class="container mb-4">
         <div class="row">
-            @foreach(\App\Models\Producto::all()->sortBy('visitas')->take(8) as $producto)
+            @foreach(\App\Models\Producto::all()->sortByDesc('visitas')->take(8) as $producto)
                 @livewire('includes.producto-thumb', ['productoId' => $producto->id])
             @endforeach
 

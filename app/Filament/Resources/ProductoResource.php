@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Columns\TextInputColumn;
 
 class ProductoResource extends Resource
 {
@@ -59,8 +60,10 @@ class ProductoResource extends Resource
                         ->label('Resumen')
                         ->disableToolbarButtons(['codeBlock'])
                         ->required()
-                        ->maxLength(500)
-                        ->columnSpan(2),
+                        ->maxLength(1000)
+                        ->columnSpan(2)
+                        ->hint(fn ($state, $component) => strlen($state) . '/' . $component->getMaxLength())
+                        ->live(debounce: '300ms'),
 
                     RichEditor::make('descripcion_larga')
                         ->label('Descripción')
@@ -112,6 +115,8 @@ class ProductoResource extends Resource
                         ->required(),
 
                     FileUpload::make('imagenes')
+                        ->label('Imágenes')
+                        ->helperText('La primera imagen es la principal (se pueden arrastrar para reordenar).')
                         ->acceptedFileTypes(['image/jpeg', 'video/mp4', 'image/png', 'image/svg+xml', 'image/webp'])
                         ->multiple()
                         ->reorderable()
@@ -119,7 +124,9 @@ class ProductoResource extends Resource
                         ->disk('public')
                         ->openable()
                         ->downloadable()
-
+                        ->panelLayout('grid')
+                        ->appendFiles()
+                        ->maxSize(51200)
                 ])->columnSpan(1)
             ])->columns(3);
     }
@@ -127,18 +134,24 @@ class ProductoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->recordClasses(fn (Producto $record) => match (true) {
+                $record->cantidad <= 3 => 'bg-red-300',
+                default => null,
+            })
             ->columns([
                 ImageColumn::make('imagenes')->label('Imagen')->limit(1),
-                TextColumn::make('nombre')->sortable()->searchable(),
-                TextColumn::make('categoria.nombre')->sortable()->searchable(),
+                TextColumn::make('nombre')->sortable()->searchable(isIndividual: true, isGlobal: false),
+                TextColumn::make('categoria.nombre')->sortable()->searchable(isIndividual: true, isGlobal: false),
                 TextColumn::make('precio')->sortable()->money('CLP', 1, true),
-                TextColumn::make('cantidad')
+                TextInputColumn::make('cantidad')
                     ->label('Stock')
+                    ->alignEnd()
                     ->sortable()
-                    ->color(function ($record) { if($record->cantidad <= 3) { return 'danger';} return '';}),
-                // Hacer la cantidad editable, así como la posición en categorías
+                    ->rules(['required', 'numeric', 'min:0'])
+                    ->type('number')
+                    ])
 
-            ])
+
             ->filters([
                 //
             ])
@@ -168,4 +181,5 @@ class ProductoResource extends Resource
             'edit' => Pages\EditProducto::route('/{record}/edit'),
         ];
     }
+
 }

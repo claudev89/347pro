@@ -65,7 +65,7 @@ class MarcaResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nombre')->searchable()->sortable(),
+                TextColumn::make('nombre')->searchable(isIndividual: true, isGlobal: false)->sortable(),
                 ImageColumn::make('imagen')->label('Logo'),
                 TextColumn::make('productos_count')
                     ->counts('productos')

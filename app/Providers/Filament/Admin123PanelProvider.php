@@ -33,6 +33,7 @@ class Admin123PanelProvider extends PanelProvider
                 'primary' => '#13BCE3',
                 'secondary' => '#F6F6F6',
             ])
+            ->viteTheme('resources/css/filament/admin123/theme.css')
             ->darkMode(false)
             ->brandLogo('http://127.0.0.1:8000/logo.png')
             ->brandLogoHeight('3rem')

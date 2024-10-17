@@ -98,7 +98,7 @@
                     {!! $producto->descripcion_corta !!}
                 </p>
 
-                <form>
+                <form class="mb-3">
                     <label for="cantidad" class="col-form-label">Cantidad</label>
                     <div class="row g-3 align-items-center">
                         <div class="col-auto pe-1">
@@ -115,7 +115,7 @@
                             </button>
                         </div>
                     </div>
-                    @if($producto->stock <= 3)
+                    @if($producto->cantidad <= 3)
                         <span class="alert alert-warning d-inline-block mt-1 mb-4 py-1">
                             <i class="bi bi-exclamation-triangle-fill"></i> Últimas unidades en stock.
                         </span>
@@ -208,6 +208,12 @@
             </div>
 
         </section>
+
+        @if($producto->categoria->productos->count() > 1)
+            <section id="related" class="px-4 mb-4">
+                <h4 class="fw-bold">Otros productos en la misma categoría:</h4>
+            </section>
+        @endif
 
         <section id="mostViews" class="px-4 mb-4">
                 <h4 class="fw-bold">Productos más vistos</h4>
