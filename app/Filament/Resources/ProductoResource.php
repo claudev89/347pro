@@ -139,7 +139,19 @@ class ProductoResource extends Resource
                 default => null,
             })
             ->columns([
-                ImageColumn::make('imagenes')->label('Imagen')->limit(1),
+                ImageColumn::make('imagenes')
+                    ->label('Imagen')
+                    ->limit(1)
+                    ->limitedRemainingText()
+                    ->getStateUsing(function ($record) {
+                        foreach ($record->imagenes as $media) {
+                            $extension = pathinfo($media, PATHINFO_EXTENSION);
+                            if (!in_array(strtolower($extension), ['mp4', 'mpeg4'])) {
+                                return $media; // Retorna la primera imagen válida
+                            }
+                        }
+                        return null;
+                }),
                 TextColumn::make('nombre')->sortable()->searchable(isIndividual: true, isGlobal: false),
                 TextColumn::make('categoria.nombre')->sortable()->searchable(isIndividual: true, isGlobal: false),
                 TextColumn::make('precio')->sortable()->money('CLP', 1, true),

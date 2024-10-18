@@ -1,4 +1,5 @@
 <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3 mb-3 d-flex justify-content-center">
+    @php($portada = '')
     <div class="card bg-white" style="width: 18rem;" x-data="{ vistaPrevia: false }" x-on:mouseover="vistaPrevia = true" x-on:mouseleave="vistaPrevia = false">
         <div class="position-relative">
             @if($producto->created_at->diffInDays(now()) <= 30)
@@ -9,9 +10,16 @@
             <button class="btn bg-white position-absolute top-0 end-0 pb-0 mt-2 me-2 rounded-circle shadow text-body-tertiary">
                 <i class="bi bi-heart fs-3"></i>
             </button>
+                @foreach($producto->imagenes as $imagen)
+                    @if(pathinfo(asset('storage/' . $imagen), PATHINFO_EXTENSION) != 'mp4'
+                        && pathinfo(asset('storage/' . $imagen), PATHINFO_EXTENSION) != 'mpeg4')
+                        @php($portada = $imagen)
+                        @break
+                    @endif
+                @endforeach
             <a href="{{ $producto->getUrl() }}">
                 <img
-                    src="{{ asset('storage/'.$producto->imagenes[0]) }}"
+                    src="{{ asset('storage/'.$imagen) }}"
                     class="card-img-top object-fit-contain" alt="{{ $producto->nombre }}"
                     style="width: 100%; height: 17.9rem" title="{{ $producto->nombre }}"
                 >

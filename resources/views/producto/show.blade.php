@@ -28,7 +28,7 @@
         </nav>
 
         <div class="row" id="fotosYDescCorta">
-            <div id="fotos" class="col-12 col-md-6 px-4 mb-3">
+            <div id="fotos" class="col-12 col-md-6 px-4 mb-3 position-relative">
                 <div class="sticky-top">
                     <template x-if="!videoUrl">
                         <div class="ratio ratio-1x1 mb-3 bg-white position-relative">
@@ -38,6 +38,11 @@
                                     <i class="bi bi-search fs-1"></i>
                                 </a>
                             </div>
+                            @if($producto->created_at->diffInDays(now()) <= 30)
+                                <span class="badge text-bg-primary top-0 start-0 mt-2 ms-1 text-white w-auto h-auto position-absolute fs-6">
+                                    <i class="bi bi-stars"></i> NUEVO
+                                </span>
+                            @endif
                         </div>
                     </template>
                     <template x-if="videoUrl">
@@ -49,6 +54,11 @@
                                         <i class="bi bi-search fs-1"></i>
                                     </a>
                                 </div>
+                                @if($producto->created_at->diffInDays(now()) <= 30)
+                                    <span class="badge text-bg-primary top-0 start-0 mt-2 ms-1 text-white w-auto h-auto position-absolute fs-6">
+                                    <i class="bi bi-stars"></i> NUEVO
+                                </span>
+                                @endif
                             </div>
                         </div>
                     </template>
@@ -68,7 +78,7 @@
                                             <source src="{{ asset('storage/' . $imagen) }}#t=0.1" type="video/mp4">
                                         </video>
                                         <div class="position-absolute top-50 start-50 translate-middle d-flex justify-content-center align-items-center w-100 h-100">
-                                            <i class="bi bi-play-circle-fill text-white opacity-70" style="font-size: 5rem;"></i>
+                                            <i class="bi bi-play-circle-fill text-white opacity-70" style="font-size: 3rem;"></i>
                                         </div>
                                     </div>
                                 @else
@@ -105,7 +115,7 @@
                             <input type="number" id="cantidad" class="form-control bg-white" aria-describedby="cantidad" max="99" min="1" value="1">
                         </div>
                         <div class="col-auto ps-0">
-                            <button class="btn btn-primary text-white fw-bold">
+                            <button class="btn btn-primary text-white fw-bold {{ $producto->cantidad === 0 ? 'disabled' : '' }}">
                                 <i class="bi bi-cart4 fs-5"></i> AGREGAR AL CARRO
                             </button>
                         </div>

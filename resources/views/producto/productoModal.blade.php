@@ -5,13 +5,28 @@
                 <div id="cerrar" class="text-end">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="row" x-data="{ imagenPrincipal: '{{ $imagen }}', videoUrl: '' }">
+                <div class="row" x-data="{
+                    imagenPrincipal: '',
+                    videoUrl: '',
+                    autoplay: 'true',
+                    init() {
+                        const file = '{{ $imagen }}';
+                        const extension = file.split('.').pop().toLowerCase();
+
+                        if (['mp4', 'mpeg4'].includes(extension)) {
+                            this.videoUrl = file;
+                            this.autoplay = false;
+                        } else {
+                            this.imagenPrincipal = file;
+                        }
+                    }
+                }">
                     <div class="col-10 col-lg-5 mb-3 bg-white">
                         <template x-if="!videoUrl">
                             <img :src="imagenPrincipal" class="w-100 object-fit-contain" alt="{{ $titulo }}" style="height: 40rem">
                         </template>
                         <template x-if="videoUrl">
-                            <video x-ref="video" autoplay controls class="w-100 object-fit-contain" style="height: 40rem" :src="videoUrl"></video>
+                            <video x-ref="video" x-bind:src="videoUrl" x-bind:autoplay="autoplay" controls class="w-100 object-fit-contain" style="height: 40rem" :src="videoUrl"></video>
                         </template>
                     </div>
                     <div class="col-2 col-lg-1">
@@ -127,15 +142,22 @@
     </div>
 
     <script>
-        var videoModal = document.getElementById('<?= $id ?>');
-        videoModal.addEventListener('hidden.bs.modal', function (event) {
-            var video = videoModal.querySelector('video');
-            if (video) {
-                video.pause();
-                video.currentTime = 0;
+        document.addEventListener('DOMContentLoaded', function () {
+            var videoModal = document.getElementById('<?= $id ?>');
+
+            // Asegúrate de que el modal existe antes de agregar el evento
+            if (videoModal) {
+                videoModal.addEventListener('hidden.bs.modal', function (event) {
+                    var video = videoModal.querySelector('video');
+                    if (video) {
+                        video.pause();
+                        video.currentTime = 0; // Reinicia el video al cerrar el modal
+                    }
+                });
             }
         });
     </script>
+
 
 
 </div>
