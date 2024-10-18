@@ -134,46 +134,7 @@
 
                 <div class="mb-3">
                     <span class="fs-5">Compartir</span>
-                    <a
-                        href="#facebook"
-                        x-data="{ hover: false }"
-                        @mouseover="hover = true"
-                        @mouseout="hover = false"
-                        :class="{ 'text-primary': hover }"
-                        class="btn rounded-circle p-0 border-0"
-                        style="width: 40px; height: 40px;">
-                        <i class="bi bi-facebook fs-3"></i>
-                    </a>
-                    <a
-                        href="#twitter"
-                        x-data="{ hover: false }"
-                        @mouseover="hover = true"
-                        @mouseout="hover = false"
-                        :class="{ 'text-primary': hover }"
-                        class="btn rounded-circle p-0 border-0"
-                        style="width: 40px; height: 40px;">
-                        <i class="bi bi-twitter-x fs-3"></i>
-                    </a>
-                    <a
-                        href="#instagram"
-                        x-data="{ hover: false }"
-                        @mouseover="hover = true"
-                        @mouseout="hover = false"
-                        :class="{ 'text-primary': hover }"
-                        class="btn rounded-circle p-0 border-0"
-                        style="width: 40px; height: 40px;">
-                        <i class="bi bi-instagram fs-3"></i>
-                    </a>
-                    <a
-                        href="#whatsapp"
-                        x-data="{ hover: false }"
-                        @mouseover="hover = true"
-                        @mouseout="hover = false"
-                        :class="{ 'text-primary': hover }"
-                        class="btn rounded-circle p-0 border-0"
-                        style="width: 40px; height: 40px;">
-                        <i class="bi bi-whatsapp fs-3"></i>
-                    </a>
+                    @include('includes.sharer')
                 </div>
 
                 <section id="descripcionProducto">
