@@ -64,6 +64,21 @@ class Categoria extends Model
         return $promedio;
     }
 
+    public function defaultImage()
+    {
+        if($this->imagen) {
+            return $this->imagen;
+        } elseif ($this->subcategorias->count() > 0 && $this->subcategorias->whereNotNull('imagen')->count() > 0) {
+            return $this->subcategorias->whereNotNull('imagen')->first()->imagen;
+        } elseif ($this->productos->count() > 0) {
+            return $this->productos->first()->imagenes[0];
+        } elseif ($this->subcategorias->count() > 0 && $this->subcategorias->first()->productos->count() > 0) {
+            return $this->subcategorias->first()->productos->first()->imagenes[0];
+        } else {
+            return null;
+        }
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

@@ -14,15 +14,25 @@
                             {{ $producto->categoria->categoriaPadre->nombre }}
                         </a>
                     </li>
+                    <li class="breadcrumb-item">
+                        <a
+                            href="{{ url($producto->categoria->categoriaPadre->slug . '/' . $producto->categoria->slug) }}"
+                            class="text-reset"
+                            style="text-decoration: none">
+                            {{ $producto->categoria->nombre }}
+                        </a>
+                    </li>
+                @else
+                    <li class="breadcrumb-item">
+                        <a
+                            href="{{ url($producto->categoria->slug) }}"
+                            class="text-reset"
+                            style="text-decoration: none">
+                            {{ $producto->categoria->nombre }}
+                        </a>
+                    </li>
                 @endif
-                <li class="breadcrumb-item">
-                    <a
-                        href="{{ url($producto->categoria->categoriaPadre->slug . '/' . $producto->categoria->slug) }}"
-                        class="text-reset"
-                        style="text-decoration: none">
-                        {{ $producto->categoria->nombre }}
-                    </a>
-                </li>
+
                 <li class="breadcrumb-item active" aria-current="page">{{ $producto->nombre }}</li>
             </ol>
         </nav>
@@ -125,10 +135,16 @@
                             </button>
                         </div>
                     </div>
-                    @if($producto->cantidad <= 3)
-                        <span class="alert alert-warning d-inline-block mt-1 mb-4 py-1">
-                            <i class="bi bi-exclamation-triangle-fill"></i> Últimas unidades en stock.
-                        </span>
+                    @if($producto->cantidad > 0 && $producto->cantidad <= 3)
+                        <span class="alert alert-warning d-inline-block mt-3">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                Últimas unidades en stock.
+                            </span>
+                    @elseif($producto->cantidad == 0)
+                        <span class="alert alert-danger d-inline-block mt-3">
+                                <i class="bi bi-x-circle-fill"></i>
+                                Producto temporalmente no disponible.
+                            </span>
                     @endif
                 </form>
 

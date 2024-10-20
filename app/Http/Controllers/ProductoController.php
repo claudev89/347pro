@@ -12,6 +12,7 @@ class ProductoController extends Controller
     {
         $producto-> visitas += 1;
         $producto->save();
+
         return view('producto.show', compact('producto'));
     }
 }

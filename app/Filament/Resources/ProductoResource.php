@@ -110,7 +110,7 @@ class ProductoResource extends Resource
                     TextInput::make('cantidad')
                         ->label('Stock')
                         ->numeric()
-                        ->minValue(1)
+                        ->minValue(0)
                         ->maxValue(1000)
                         ->required(),
 
@@ -135,7 +135,8 @@ class ProductoResource extends Resource
     {
         return $table
             ->recordClasses(fn (Producto $record) => match (true) {
-                $record->cantidad <= 3 => 'bg-red-300',
+                $record->cantidad >0 && $record->cantidad <= 3 => 'bg-warning-200',
+                $record->cantidad == 0 => 'bg-danger-200',
                 default => null,
             })
             ->columns([

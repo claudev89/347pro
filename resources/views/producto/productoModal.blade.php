@@ -78,17 +78,22 @@
                                     <input type="number" id="cantidad" class="form-control" value="1">
                                 </div>
                                 <div class="col-auto">
-                                    <button type="submit" class="btn btn-primary text-white fw-bold">
+                                    <button type="submit" class="btn btn-primary text-white fw-bold {{ $producto->cantidad == 0 ? 'disabled' : '' }}">
                                         <i class="bi bi-cart3" style="-webkit-text-stroke: 1px"></i> AÑADIR AL CARRITO
                                     </button>
                                 </div>
                             </div>
                         </form>
-                        @if($stock <= 3)
+                        @if($stock > 0 && $stock <= 3)
                             <span class="alert alert-warning d-inline-block mt-3">
-                                        <i class="bi bi-exclamation-triangle-fill"></i>
-                                        Últimas unidades en stock.
-                                    </span>
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                Últimas unidades en stock.
+                            </span>
+                        @elseif($stock == 0)
+                            <span class="alert alert-danger d-inline-block mt-3">
+                                <i class="bi bi-x-circle-fill"></i>
+                                Producto temporalmente no disponible.
+                            </span>
                         @endif
                     </div>
                 </div>
