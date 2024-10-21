@@ -72,8 +72,12 @@ class Categoria extends Model
             return $this->subcategorias->whereNotNull('imagen')->first()->imagen;
         } elseif ($this->productos->count() > 0) {
             return $this->productos->first()->imagenes[0];
-        } elseif ($this->subcategorias->count() > 0 && $this->subcategorias->first()->productos->count() > 0) {
-            return $this->subcategorias->first()->productos->first()->imagenes[0];
+        } elseif ($this->subcategorias->count() > 0 && $this->subcategorias->filter(function ($subcategoria) {
+            return $subcategoria->productos->count() > 0;
+            })) {
+            return $this->subcategorias
+                ->filter(fn($subcategoria) => $subcategoria->productos->count() > 0)
+                ->first()->productos->first()->imagenes[0];
         } else {
             return null;
         }
