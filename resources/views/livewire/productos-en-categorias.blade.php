@@ -1,7 +1,8 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col-6">
-            Hay {{ $categoria->obtenerProductos()->count() }} {{ $categoria->obtenerProductos()->count() === 1 ? 'producto.' : 'productos.' }}
+            Hay {{ $categoria->obtenerProductos()->count() }}
+            {{ $categoria->obtenerProductos()->count() === 1 ? 'producto.' : 'productos.' }}
         </div>
         <div class="col-6 d-flex justify-content-end">
             <div class="row g-3 align-items-center">

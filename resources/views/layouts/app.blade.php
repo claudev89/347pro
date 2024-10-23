@@ -97,7 +97,7 @@
                                     <ul class="dropdown-menu">
                                         @foreach($categoria->subcategorias as $subcategoria)
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ url($categoria->slug, $subcategoria->slug) }}">
+                                                    <a class="dropdown-item z-3" href="{{ url($categoria->slug, $subcategoria->slug) }}">
                                                         {{ $subcategoria->nombre }}</a>
                                                 </li>
                                         @endforeach

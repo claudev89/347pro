@@ -40,7 +40,7 @@
 
         <div class="row" id="fotosYDescCorta">
             <div id="fotos" class="col-12 col-md-6 px-4 mb-3 position-relative">
-                <div class="sticky-top">
+                <div class="sticky-top z-0">
                     <template x-if="!videoUrl">
                         <div class="ratio ratio-1x1 mb-3 bg-white position-relative">
                             <img :src="imagenPrincipal" class="object-fit-contain mb-3 d-block mx-auto" alt="{{ $producto->nombre }}">
@@ -200,11 +200,21 @@
         @if($producto->categoria->productos->count() > 1)
             <section id="related" class="px-4 mb-4">
                 <h4 class="fw-bold">Otros productos en la misma categoría:</h4>
+                <div class="row">
+                    @foreach($producto->categoria->productos->where('id', '!=', $producto->id)->take(4) as $productoRelacionado)
+                        @livewire('includes.producto-thumb',  ['productoId' => $productoRelacionado->id], key($productoRelacionado->id))
+                    @endforeach
+                </div>
             </section>
         @endif
 
-        <section id="mostViews" class="px-4 mb-4">
-                <h4 class="fw-bold">Productos más vistos</h4>
+        <section id="masVistos" class="px-4 mb-4">
+            <h4 class="fw-bold">Productos más vistos</h4>
+            <div class="row">
+                @foreach(\App\Models\Producto::orderBy('visitas', 'desc')->take(4)->get() as $productoMasVisto)
+                    @livewire('includes.producto-thumb',  ['productoId' => $productoMasVisto->id], key($productoMasVisto->id))
+                @endforeach
+            </div>
         </section>
 
         {{-- Modal de imágenes del producto --}}
@@ -285,7 +295,7 @@
                 opacity: 1;
             }
 
-            .modal-content {
+            #galeriaModal .modal-content {
                 background-color: transparent !important;
                 border: 0px !important
             }

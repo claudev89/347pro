@@ -29,14 +29,11 @@ class ProductosEnCategorias extends Component
 
     public function render()
     {
-        $productos = $this->categoria->obtenerProductos()->toQuery()->orderBy($this->columnaAOrdenar, $this->direccion)->paginate($this->porPagina);
-
-//
-//        if (strpos($this->columnaAOrdenar, '_desc') !== false) {
-//            $productos = $productos->sortByDesc(str_replace('_desc', '', $this->columnaAOrdenar));
-//        } else {
-//            $productos = $productos->sortBy(str_replace('_asc', '', $this->columnaAOrdenar));
-//        }
+        $productos = $this->categoria
+            ->obtenerProductos()
+            ->toQuery()
+            ->orderBy($this->columnaAOrdenar, $this->direccion)
+            ->paginate($this->porPagina);
 
         return view('livewire.productos-en-categorias', ['productos' => $productos]);
     }
