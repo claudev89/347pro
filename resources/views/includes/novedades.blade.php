@@ -3,15 +3,9 @@
 
     <div class="container">
         <div class="row">
-            @for($i = 0; $i<4; $i++)
-                <livewire:includes.producto-thumb
-                    :props="[
-                    'imagen' => 'https://347pro.cl/29-home_default/transparent-shaving-gel-aqua.jpg',
-                    'titulo' => 'Shaving Gel Aqua',
-                    'precio' => 15990,
-                    ]"
-                />
-            @endfor
+            @foreach(\App\Models\Producto::all()->sortByDesc('created_at')->take(8) as $producto)
+                @livewire('includes.producto-thumb', ['productoId' => $producto->id])
+            @endforeach
 
             <a class="text-end text-body-tertiary btn" href="#"><h5 class="me-3">Todas las novedades ></h5></a>
         </div>

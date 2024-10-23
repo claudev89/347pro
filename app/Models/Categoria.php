@@ -83,6 +83,17 @@ class Categoria extends Model
         }
     }
 
+    public function obtenerProductos()
+    {
+        $productos = $this->productos;
+        if( $this->subcategorias->count() > 0) {
+            foreach ($this->subcategorias as $subcategoria) {
+                $productos = $productos->merge($subcategoria->productos);
+            }
+        }
+        return $productos;
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

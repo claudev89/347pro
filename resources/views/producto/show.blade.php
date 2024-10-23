@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('titulo', $producto->nombre)
 @section('content')
     <main class="container" x-data="{ imagenPrincipal: '{{ asset('storage/' . $producto->imagenes[0]) }}', videoUrl: '', indiceActual: 0 }">
         <nav aria-label="breadcrumb">
@@ -280,7 +281,7 @@
             }
 
             /* Mostrar el botón cuando se hace hover sobre el div que contiene la imagen */
-            .position-relative:hover .overlay-button {
+            .ratio:hover .overlay-button {
                 opacity: 1;
             }
 

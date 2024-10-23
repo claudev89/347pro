@@ -43,9 +43,6 @@
                         ])
 
             </div>
-            <div id="imagen">
-
-            </div>
                 @foreach($producto->imagenes as $imagen)
                     @if(pathinfo(asset('storage/' . $imagen), PATHINFO_EXTENSION) != 'mp4'
                         && pathinfo(asset('storage/' . $imagen), PATHINFO_EXTENSION) != 'mpeg4')
@@ -58,7 +55,7 @@
                     src="{{ asset('storage/'.$imagen) }}"
                     class="card-img-top object-fit-contain z-0 position-relative {{ $producto->cantidad == 0 ? 'opacity-25' : '' }}"
                     alt="{{ $producto->nombre }}"
-                    style="width: 100%; height: 17.9rem;"
+                    style="width: 100%;"
                     title="{{ $producto->nombre }}"
                 />
             </a>

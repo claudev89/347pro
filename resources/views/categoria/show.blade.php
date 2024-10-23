@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('titulo', isset($categoria) ? $categoria->nombre : $subcategoria->nombre)
 @section('content')
     <main class="container">
         <div>
@@ -88,7 +89,7 @@
 
 
             <div id="productos" class="p-3">
-                Acá irian los productos de la categoría o subcategoría en un componetne de LiveWire
+                <livewire:productos-en-categorias :categoria="isset($categoria) ? $categoria : $subcategoria" />
             </div>
             </div>
     </main>

@@ -9,7 +9,14 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>
+        @if(View::hasSection('titulo'))
+            @yield('titulo') - {{ config('app.name', 'Laravel') }}
+        @else
+            {{ config('app.name', 'Laravel') }}
+        @endif
+    </title>
+
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 

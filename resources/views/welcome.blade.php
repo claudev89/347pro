@@ -4,7 +4,7 @@
         @include('includes.carrusel-principal')
         @include('includes.best-sellers')
         @include('includes.bienvenida')
-{{--        @include('includes.novedades')--}}
+        @include('includes.novedades')
     </main>
     @include('includes.footer')
 @endsection
