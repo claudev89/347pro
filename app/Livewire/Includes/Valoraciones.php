@@ -3,16 +3,21 @@
 namespace App\Livewire\Includes;
 
 use App\Models\Valoracion;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Valoraciones extends Component
 {
+    #[Validate('required|integer|min:1')]
     public $valoracionSeleccionada = 0;
+
     public $producto;
     public $comentario;
 
     public function valorar()
     {
+        $this->validate();
+
         Valoracion::create([
             'puntuacion' => $this->valoracionSeleccionada,
             'comentario' => $this->comentario,

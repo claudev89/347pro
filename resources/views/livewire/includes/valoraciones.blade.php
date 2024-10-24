@@ -33,6 +33,12 @@
                             </label>
                         @endfor
                         <span x-text="comentario.length + '/' + limit" class="end-0 position-absolute"></span>
+                            @error('valoracionSeleccionada')
+                                <span class="alert alert-danger py-0">
+                                    <i class="bi bi-exclamation-octagon"></i>
+                                    La valoración no puede estar en blanco.
+                                </span>
+                            @enderror
 
                         <div class="form-floating mb-2">
                         <textarea
