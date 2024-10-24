@@ -56,9 +56,22 @@
 
                         <button
                             wire:click="valorar()"
+                            wire:target="valorar()"
+                            wire:loading.remove
                             class="btn btn-primary text-white end-0 position-absolute me-2 {{ $valoracionSeleccionada == 0 ? 'disabled' : '' }}">
                             <i class="bi bi-send"></i> Publicar
                         </button>
+
+                            <button
+                                wire:loading
+                                wire:target="valorar()"
+                                class="btn btn-primary text-white end-0 position-absolute me-2 disabled">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Publicando...</span>
+                                </div>
+                                Publicando...
+
+                            </button>
 
                     </form>
                 </div>
