@@ -9,7 +9,7 @@
                 <form class="row g-3">
                     <div class="col-auto">
                         <label for="correo" class="visually-hidden">Correo</label>
-                        <input type="text" class="form-control" id="correo" placeholder="Su dirección de correo electrónico">
+                        <input type="text" class="form-control bg-white" id="correo" placeholder="Su dirección de correo electrónico">
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn btn-primary mb-3 text-white fw-bold px-3">SUSCRIBIRSE</button>

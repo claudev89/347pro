@@ -40,7 +40,7 @@
 
         <div class="row" id="fotosYDescCorta">
             <div id="fotos" class="col-12 col-md-6 px-4 mb-3 position-relative">
-                <div class="sticky-top z-0">
+                <div class="sticky-top z-0 pt-2">
                     <template x-if="!videoUrl">
                         <div class="ratio ratio-1x1 mb-3 bg-white position-relative">
                             <img :src="imagenPrincipal" class="object-fit-contain mb-3 d-block mx-auto" alt="{{ $producto->nombre }}">
@@ -173,7 +173,13 @@
                                 <tbody>
                                 <tr>
                                     <th scope="col">Marca</th>
-                                    <th scope="col"><img src="{{ asset('storage/' . $producto->marca->imagen) }}" alt="{{ $producto->marca->nombre }}" style="height: 5rem"> </th>
+                                    <th scope="col">
+                                        @if($producto->marca)
+                                            <img src="{{ asset('storage/' . $producto->marca->imagen) }}" alt="{{ $producto->marca->nombre }}" style="height: 5rem">
+                                        @else
+                                            Genérico
+                                        @endif
+                                    </th>
                                 </tr>
                                 <tr>
                                     <th scope="row">Unidades disponibles</th>
@@ -189,12 +195,7 @@
         </div>
 
         <section id="resenias" class="mb-4 p-4">
-            <h4 class="mb-3"><i class="bi bi-chat-left-text-fill"></i> Reseñas ({{ $producto->valoraciones->count() }})</h4>
-
-            <div class="bg-white p-4">
-                Cuano hayan reseñas, acá estarán :P
-            </div>
-
+            @livewire('includes.valoraciones', ['producto' => $producto])
         </section>
 
         @if($producto->categoria->productos->count() > 1)
@@ -262,13 +263,13 @@
                                 this.videoUrl = '';
                             }
                         },
-                        anterior() {
-                            this.mostrarImagen(this.indiceActual > 0 ? this.indiceActual - 1 : this.imagenes.length - 1);
-                            this.activarBoton('btnAnterior');
-                        },
                         siguiente() {
-                            this.mostrarImagen(this.indiceActual < this.imagenes.length - 1 ? this.indiceActual + 1 : 0);
+                            this.mostrarImagen(this.indiceActual > 0 ? this.indiceActual - 1 : this.imagenes.length - 1);
                             this.activarBoton('btnSiguiente');
+                        },
+                        anterior() {
+                            this.mostrarImagen(this.indiceActual < this.imagenes.length - 1 ? this.indiceActual + 1 : 0);
+                            this.activarBoton('btnAnterior');
                         },
                         activarBoton(botonId) {
                             const boton = document.getElementById(botonId);

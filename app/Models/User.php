@@ -87,4 +87,9 @@ class User extends Authenticatable
     {
         return $this->hasOneThrough(Boleta::class, Orden::class, 'user_id', 'orden_id', 'id', 'id');
     }
+
+    public function valoraciones()
+    {
+        return $this->hasMany(Valoracion::class);
+    }
 }
