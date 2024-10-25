@@ -130,11 +130,7 @@
                                 <i class="bi bi-cart4 fs-5"></i> AGREGAR AL CARRO
                             </button>
                         </div>
-                        <div class="col-auto">
-                            <button class="btn btn-light bg-white rounded-circle p-2 shadow" style="width: 48px; height: 48px">
-                                <i class="bi bi-heart fs-3"></i>
-                            </button>
-                        </div>
+                        @livewire('includes.save-button', ['producto' => $producto])
                     </div>
                     @if($producto->cantidad > 0 && $producto->cantidad <= 3)
                         <span class="alert alert-warning d-inline-block mt-3">

@@ -18,10 +18,10 @@
                         </span>
                     </a>
                 @endif
-                <button
-                    class="btn bg-white position-absolute top-0 end-0 pb-0 mt-2 me-2 rounded-circle shadow text-body-tertiary z-3">
-                    <i class="bi bi-heart fs-3"></i>
-                </button>
+
+                    <div class="position-absolute z-3 end-0 mt-2 me-2">
+                        @livewire('includes.save-button', ['producto' => $producto])
+                    </div>
 
                     <button
                         class="btn bg-white col-12 position-absolute bottom-0 start-0 p-2 mb-1 shadow z-3"
