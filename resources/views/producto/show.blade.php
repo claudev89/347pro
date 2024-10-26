@@ -214,72 +214,8 @@
             </div>
         </section>
 
-        {{-- Modal de imágenes del producto --}}
-        <div class="modal fade modal-xl" id="galeriaModal" tabindex="-1" aria-labelledby="galeriaModalLabel" aria-hidden="true" x-data="galeria()" @keydown.right="siguiente()" @keydown.space="siguiente()" @keydown.left="anterior()">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content">
-                    <div class="modal-body position-relative" x-data="galeria()" style="overflow-x: hidden">
-                        <div class="position-relative" style="z-index: 1051">
-                            <span class="badge text-bg-secondary position-absolute start-0 mt-2 ms-2 fs-5" x-text="`${indiceActual + 1}/${imagenes.length}`"></span>
-                            <button type="button" class="btn btn-outline-dark position-absolute end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
-                        </div>
-                            <div class="ratio ratio-1x1 me-3 bg-white position-relative" style="height: 100vh; z-index: 1">
-                                <template x-if="!videoUrl">
-                                    <img :src="imagenPrincipal" class="object-fit-contain mb-3 d-block mx-auto img-fluid w-100 h-100" alt="{{ $producto->nombre }}">
-                                </template>
-                                <template x-if="videoUrl">
-                                    <video x-ref="video" autoplay controls class="w-100 object-fit-contain" :src="videoUrl"></video>
-                                </template>
-                            </div>
+        @include('producto.galeriaModal', ['producto' => $producto])
 
-                        <button type="button" id="btnAnterior" class="btn btn-outline-dark position-absolute start-0 top-50 translate-middle-y ms-5" aria-label="Anterior" style="z-index: 1052;" @click="anterior()">
-                            <i class="bi bi-chevron-left fs-1"></i>
-                        </button>
-
-                        <!-- Botón derecha -->
-                        <button type="button" id="btnSiguiente" class="btn btn-outline-dark position-absolute end-0 top-50 translate-middle-y me-5" aria-label="Siguiente" style="z-index: 1052;" @click="siguiente()">
-                            <i class="bi bi-chevron-right fs-1"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                function galeria() {
-                    return {
-                        imagenes: @json($producto->imagenes),
-                        mostrarImagen(index) {
-                            this.indiceActual = index;
-                            const extension = this.imagenes[index].split('.').pop();
-                            if (extension === 'mp4' || extension === 'mpeg4') {
-                                this.videoUrl = '{{ asset('storage') }}/' + this.imagenes[index] + '#t=0.1';
-                                this.imagenPrincipal = '';
-                            } else {
-                                this.imagenPrincipal = '{{ asset('storage') }}/' + this.imagenes[index];
-                                this.videoUrl = '';
-                            }
-                        },
-                        siguiente() {
-                            this.mostrarImagen(this.indiceActual > 0 ? this.indiceActual - 1 : this.imagenes.length - 1);
-                            this.activarBoton('btnSiguiente');
-                        },
-                        anterior() {
-                            this.mostrarImagen(this.indiceActual < this.imagenes.length - 1 ? this.indiceActual + 1 : 0);
-                            this.activarBoton('btnAnterior');
-                        },
-                        activarBoton(botonId) {
-                            const boton = document.getElementById(botonId);
-                            boton.classList.add('active');
-                            setTimeout(() => {
-                                boton.classList.remove('active');
-                            }, 200); // ajusta el tiempo según lo necesites
-                        },
-                    }
-                }
-            </script>
-
-        </div>
-        {{-- Fin del modal --}}
 
         <style>
             .overlay-button {
