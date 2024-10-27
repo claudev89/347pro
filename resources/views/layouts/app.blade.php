@@ -28,6 +28,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
+    @livewire('includes.toast-notification')
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mb-1 py-0">
             <div class="container">
@@ -42,7 +43,7 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" href="{{ route('login') }}">
+                                    <a class="nav-link text-dark" href="{{ route('login') }}" data-bs-toggle="modal" data-bs-target="#loginModal">
                                         <i class="bi bi-person" style="-webkit-text-stroke: 1px"></i><strong> {{ __('Login') }}</strong>
                                     </a>
                                 </li>
@@ -128,7 +129,7 @@
         </main>
     </div>
 
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{{--    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>--}}
 
     <style>
         .dropdown:hover .dropdown-menu {
@@ -140,5 +141,7 @@
             display: none;
         }
     </style>
+    @livewire('includes.login-modal')
+
 </body>
 </html>

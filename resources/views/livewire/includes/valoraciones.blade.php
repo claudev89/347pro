@@ -85,7 +85,8 @@
             </div>
 
         @else
-            <a href="{{route('login')}}" style="text-decoration: none">Inicia sesión</a> para poder dejar una valoración.
+            <a href="{{route('login')}}" style="text-decoration: none" wire:click.prevent
+               data-bs-toggle="modal" data-bs-target="#loginModal">Inicia sesión</a> para poder dejar una valoración.
         @endauth
 
         <section id="valoraciones" class="position-relative mt-4 pt-4">

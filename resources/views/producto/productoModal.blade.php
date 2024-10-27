@@ -72,10 +72,10 @@
                         </p>
 
                         <form>
-                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <label for="cantidad-{{ $producto->id }}" class="form-label">Cantidad</label>
                             <div class="row g-3 align-items-center">
                                 <div class="col-2 pe-0">
-                                    <input type="number" id="cantidad" class="form-control" value="1" min="1">
+                                    <input type="number" id="cantidad-{{ $producto->id }}" class="form-control" value="1" min="1">
                                 </div>
                                 <div class="col-auto">
                                     <button type="submit" class="btn btn-primary text-white fw-bold {{ $producto->cantidad == 0 ? 'disabled' : '' }}">
