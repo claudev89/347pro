@@ -36,9 +36,8 @@
                     <a href="#" class="text-reset" style="text-decoration: none"><strong>Contáctate con nosotros</strong></a>
                 </div>
                 <div>
-
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto d-flex flex-row">
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -51,13 +50,16 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <strong>{{ Auth::user()->name }}</strong>
+                                    <img src="{{ Auth::user()->profile_photo_url }}" class="rounded-circle" style="height: 1.8rem">
+                                    <div class="d-inline-block my-auto py-2">
+                                        <strong class="ms-1"> {{ Auth::user()->name }}</strong>
+                                    </div>
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu dropdown-menu-end position-absolute" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                                 document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -67,62 +69,72 @@
                                 </div>
                             </li>
                         @endguest
-                        <li class="nav-item">
-                            <a class="nav-link text-dark">
-                                <i class="bi bi-cart3" style="-webkit-text-stroke: 1px" href="#"></i><strong> Carrito (0)</strong>
+                        <li class="nav-item ms-2 my-auto">
+                            <a class="nav-link text-dark" href="#">
+                                <i class="bi bi-cart3" style="-webkit-text-stroke: 1px"></i><strong> Carrito (0)</strong>
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
+    </div>
+
 
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="/logo.png" alt="{{ config('app.name', 'Laravel') }}" title="{{ config('app.name', 'Laravel') }}">
                 </a>
+
+                <!-- Botón de colapso -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <!-- Elementos colapsables dentro de la barra de navegación -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-                        @foreach($categorias as $categoria)
-                            @if(is_null($categoria->categoriaPadre) && $categoria->subcategorias->count() > 0)
-                                <li class="nav-item dropdown text-uppercase">
-                                    <a href="{{ url($categoria->slug) }}" class="nav-link dropdown-toggle" role="button">
-                                        <strong>{{ $categoria->nombre }}</strong>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        @foreach($categoria->subcategorias as $subcategoria)
-                                                <li>
-                                                    <a class="dropdown-item z-3" href="{{ url($categoria->slug, $subcategoria->slug) }}">
-                                                        {{ $subcategoria->nombre }}</a>
-                                                </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                                <ul class="dropdown-menu"></ul>
-                            @elseif(is_null($categoria->categoriaPadre))
-                                <li class="nav-item text-uppercase">
-                                    <a class="nav-link" href="{{ url($categoria->slug) }}"><strong>{{ $categoria->nombre }}</strong></a>
-                                </li>
-                            @endif
-                        @endforeach
-                    </ul>
+                    <div class="row w-100">
+                        <!-- Barra de navegación -->
+                        <div class="col-12 col-xl-9 order-lg-first">
+                            <ul class="navbar-nav me-auto">
+                                @foreach($categorias as $categoria)
+                                    @if(is_null($categoria->categoriaPadre) && $categoria->subcategorias->count() > 0)
+                                        <li class="nav-item dropdown text-uppercase">
+                                            <a href="{{ url($categoria->slug) }}" class="nav-link dropdown-toggle" role="button">
+                                                <strong>{{ $categoria->nombre }}</strong>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                @foreach($categoria->subcategorias as $subcategoria)
+                                                    <li>
+                                                        <a class="dropdown-item z-3" href="{{ url($categoria->slug, $subcategoria->slug) }}">
+                                                            {{ $subcategoria->nombre }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @elseif(is_null($categoria->categoriaPadre))
+                                        <li class="nav-item text-uppercase">
+                                            <a class="nav-link" href="{{ url($categoria->slug) }}">
+                                                <strong>{{ $categoria->nombre }}</strong>
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        </div>
 
-
-                </div>
-                <div>
-                    <div class="input-group">
-                        <span class="input-group-text" id="search-icon"><i class="bi bi-search"></i></span>
-                        <input type="search" class="form-control" placeholder="Buscar en el catálogo" aria-label="Buscar" aria-describedby="search-icon">
+                        <!-- Barra de búsqueda -->
+                        <div class="col-12 col-md-4 col-xl-3 order-lg-last mt-2 mt-md-0 end-0 ms-md-auto">
+                            @livewire('includes.buscar-producto')
+                        </div>
                     </div>
                 </div>
             </div>
         </nav>
+
+
 
         <main class="py-3">
             @yield('content')
@@ -132,12 +144,12 @@
 {{--    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>--}}
 
     <style>
-        .dropdown:hover .dropdown-menu {
+         #navbarSupportedContent .navbar-nav .dropdown:hover .dropdown-menu {
             display: block;
             margin-top: 0; /* Evita un salto al mostrar el menú */
         }
 
-        .dropdown-toggle::after {
+         #navbarSupportedContent .dropdown-toggle::after {
             display: none;
         }
     </style>

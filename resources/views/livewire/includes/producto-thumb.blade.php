@@ -43,16 +43,10 @@
                         ])
 
             </div>
-                @foreach($producto->imagenes as $imagen)
-                    @if(pathinfo(asset('storage/' . $imagen), PATHINFO_EXTENSION) != 'mp4'
-                        && pathinfo(asset('storage/' . $imagen), PATHINFO_EXTENSION) != 'mpeg4')
-                        @php($portada = $imagen)
-                        @break
-                    @endif
-                @endforeach
+
             <a href="{{ $producto->getUrl() }}">
                 <img
-                    src="{{ asset('storage/'.$imagen) }}"
+                    src="{{ $producto->getPortada() }}"
                     class="card-img-top object-fit-contain z-0 position-relative {{ $producto->cantidad == 0 ? 'opacity-25' : '' }}"
                     alt="{{ $producto->nombre }}"
                     style="width: 100%;"

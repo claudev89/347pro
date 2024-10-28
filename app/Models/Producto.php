@@ -75,4 +75,22 @@ class Producto extends Model
             return url($this->categoria->slug . '/' . $this->slug);
         }
     }
+
+    public function getPortada()
+    {
+        foreach ($this->imagenes as $imagen)
+        {
+            if(pathinfo(asset('storage/' . $imagen), PATHINFO_EXTENSION) != 'mp4'
+                && pathinfo(asset('storage/' . $imagen), PATHINFO_EXTENSION) != 'mpeg4') {
+                $portada = asset('storage/' . $imagen);
+                break;
+            }
+        }
+        return $portada;
+    }
+
+    public function scopeSearch($query, $value)
+    {
+        $query->where('nombre', 'LIKE', '%' . $value . '%');
+    }
 }

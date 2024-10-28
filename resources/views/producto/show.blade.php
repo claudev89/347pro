@@ -132,17 +132,8 @@
                         </div>
                         @livewire('includes.save-button', ['producto' => $producto])
                     </div>
-                    @if($producto->cantidad > 0 && $producto->cantidad <= 3)
-                        <span class="alert alert-warning d-inline-block mt-3">
-                                <i class="bi bi-exclamation-triangle-fill"></i>
-                                Últimas unidades en stock.
-                            </span>
-                    @elseif($producto->cantidad == 0)
-                        <span class="alert alert-danger d-inline-block mt-3">
-                                <i class="bi bi-x-circle-fill"></i>
-                                Producto temporalmente no disponible.
-                            </span>
-                    @endif
+                    @include('includes.productos.stock-alert', ['stock' => $producto->cantidad])
+
                 </form>
 
                 <div class="mb-3">
