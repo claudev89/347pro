@@ -82,61 +82,60 @@
 
 
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="/logo.png" alt="{{ config('app.name', 'Laravel') }}" title="{{ config('app.name', 'Laravel') }}">
-                </a>
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="/logo.png" alt="{{ config('app.name', 'Laravel') }}" title="{{ config('app.name', 'Laravel') }}">
+            </a>
 
-                <!-- Botón de colapso -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <!-- Botón de colapso -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <!-- Elementos colapsables dentro de la barra de navegación -->
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div class="row w-100">
-                        <!-- Barra de navegación -->
-                        <div class="col-12 col-xl-9 order-lg-first">
-                            <ul class="navbar-nav me-auto">
-                                @foreach($categorias as $categoria)
-                                    @if(is_null($categoria->categoriaPadre) && $categoria->subcategorias->count() > 0)
-                                        <li class="nav-item dropdown text-uppercase">
-                                            <a href="{{ url($categoria->slug) }}" class="nav-link dropdown-toggle" role="button">
-                                                <strong>{{ $categoria->nombre }}</strong>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                @foreach($categoria->subcategorias as $subcategoria)
-                                                    <li>
-                                                        <a class="dropdown-item z-3" href="{{ url($categoria->slug, $subcategoria->slug) }}">
-                                                            {{ $subcategoria->nombre }}
-                                                        </a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </li>
-                                    @elseif(is_null($categoria->categoriaPadre))
-                                        <li class="nav-item text-uppercase">
-                                            <a class="nav-link" href="{{ url($categoria->slug) }}">
-                                                <strong>{{ $categoria->nombre }}</strong>
-                                            </a>
-                                        </li>
-                                    @endif
-                                @endforeach
-                            </ul>
-                        </div>
-
-                        <!-- Barra de búsqueda -->
-                        <div class="col-12 col-md-4 col-xl-3 order-lg-last mt-2 mt-md-0 end-0 ms-md-auto">
-                            @livewire('includes.buscar-producto')
-                        </div>
+            <!-- Elementos colapsables dentro de la barra de navegación -->
+            <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+                <div class="row w-100">
+                    <!-- Barra de navegación -->
+                    <div class="col-12 col-xl-9 col-md-8 w-100">
+                        <ul class="navbar-nav me-auto">
+                            @foreach($categorias as $categoria)
+                                @if(is_null($categoria->categoriaPadre) && $categoria->subcategorias->count() > 0)
+                                    <li class="nav-item dropdown text-uppercase me-2">
+                                        <a href="{{ url($categoria->slug) }}" class="nav-link dropdown-toggle" role="button">
+                                            <strong class="text-wrap-custom">{{ $categoria->nombre }}</strong>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            @foreach($categoria->subcategorias as $subcategoria)
+                                                <li>
+                                                    <a class="dropdown-item z-3" href="{{ url($categoria->slug, $subcategoria->slug) }}">
+                                                        {{ $subcategoria->nombre }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                @elseif(is_null($categoria->categoriaPadre))
+                                    <li class="nav-item text-uppercase">
+                                        <a class="nav-link" href="{{ url($categoria->slug) }}">
+                                            <strong>{{ $categoria->nombre }}</strong>
+                                        </a>
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
-        </nav>
+
+            <!-- Barra de búsqueda siempre visible en pantallas pequeñas -->
+            <div class="col-12 col-md-2 col-xl-3 mt-md-0 mt-2">
+                @livewire('includes.buscar-producto')
+            </div>
+        </div>
+    </nav>
 
 
-
-        <main class="py-3">
+    <main class="py-3">
             @yield('content')
         </main>
     </div>
@@ -152,6 +151,16 @@
          #navbarSupportedContent .dropdown-toggle::after {
             display: none;
         }
+
+         .text-wrap-custom {
+             white-space: nowrap; /* No hacer wrap por defecto */
+         }
+
+         @media (max-width: 1400px) {
+             .text-wrap-custom {
+                 white-space: normal; /* Permitir wrap en pantallas pequeñas */
+             }
+         }
     </style>
     @livewire('includes.login-modal')
 

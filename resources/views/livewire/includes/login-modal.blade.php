@@ -12,8 +12,8 @@
                 <span class="text-body-tertiary">Ingresa tu dirección de correo electrónico y contraseña para iniciar sesión:</span>
 
                 <div class="input-group mb-3 mt-3">
-                    <span class="input-group-text" id="correo"><i class="bi bi-envelope"></i></span>
-                    <input wire:model.live.debounce.300ms="email" type="text" class="form-control" placeholder="Correo electrónico" aria-label="correo" aria-describedby="basic-addon1">
+                    <span class="input-group-text" id="correo-label"><i class="bi bi-envelope py-2"></i></span>
+                    <input wire:model.live.debounce.300ms="email" id="correoInput" type="text" class="form-control" placeholder="Correo electrónico" aria-label="correo" aria-describedby="correo-label">
                 </div>
                 <div class="input-group mb-3" x-data="{ pwdType: true }">
                     <span class="input-group-text"><i class="bi bi-key"></i></span>
@@ -26,8 +26,8 @@
                             x-transition.delay.70ms
                             x-text="pwdType ? 'Mostrar contraseña' : 'Ocultar contraseña'">
                         </span>
-                        <button class="btn p-0" x-on:click="pwdType = !pwdType">
-                            <i :class="pwdType ? 'bi bi-eye' : 'bi bi-eye-slash'" @mouseover="visibleTooltip = true" @mouseout="visibleTooltip = false"></i>
+                        <button class="btn p-2 m-0" x-on:click="pwdType = !pwdType" @mouseover="visibleTooltip = true" @mouseout="visibleTooltip = false">
+                            <i :class="pwdType ? 'm-0 bi bi-eye' : 'bi bi-eye-slash'"></i>
                         </button>
                     </span>
                 </div>
@@ -74,6 +74,14 @@
         $wire.on('logeado', () => {
             document.getElementById('btnCerrar').click();
         });
+
+        const myModal = document.getElementById('loginModal')
+        const myInput = document.getElementById('correoInput')
+
+        myModal.addEventListener('shown.bs.modal', () => {
+            myInput.focus()
+        })
+
     </script>
     @endscript
 

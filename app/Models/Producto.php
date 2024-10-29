@@ -91,6 +91,10 @@ class Producto extends Model
 
     public function scopeSearch($query, $value)
     {
-        $query->where('nombre', 'LIKE', '%' . $value . '%');
+        $query->where('nombre', 'LIKE', '%' . $value . '%')
+            ->orWhereHas('categoria', function ($q) use ($value) {
+                $q->where('nombre', 'LIKE', '%' . $value . '%');
+            });
+
     }
 }
