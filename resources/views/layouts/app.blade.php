@@ -42,14 +42,26 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" href="{{ route('login') }}" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                    <a
+                                        class="nav-link text-dark"
+                                        href="{{ route('login') }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#loginModal">
                                         <i class="bi bi-person" style="-webkit-text-stroke: 1px"></i><strong> {{ __('Login') }}</strong>
                                     </a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a
+                                    id="navbarDropdown"
+                                    class="nav-link dropdown-toggle"
+                                    href="#"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    v-pre>
                                     <img src="{{ Auth::user()->profile_photo_url }}" class="rounded-circle" style="height: 1.8rem">
                                     <div class="d-inline-block my-auto py-2">
                                         <strong class="ms-1"> {{ Auth::user()->name }}</strong>
@@ -88,7 +100,14 @@
             </a>
 
             <!-- Botón de colapso -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -107,7 +126,9 @@
                                         <ul class="dropdown-menu">
                                             @foreach($categoria->subcategorias as $subcategoria)
                                                 <li>
-                                                    <a class="dropdown-item z-3" href="{{ url($categoria->slug, $subcategoria->slug) }}">
+                                                    <a
+                                                        class="dropdown-item z-3"
+                                                        href="{{ url($categoria->slug, $subcategoria->slug) }}">
                                                         {{ $subcategoria->nombre }}
                                                     </a>
                                                 </li>

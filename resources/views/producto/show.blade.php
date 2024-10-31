@@ -129,8 +129,11 @@
                             <button class="btn btn-primary text-white fw-bold {{ $producto->cantidad === 0 ? 'disabled' : '' }}">
                                 <i class="bi bi-cart4 fs-5"></i> AGREGAR AL CARRO
                             </button>
+                            <div class="ms-2 bg-white border border-secondary d-inline-flex align-items-center px-2 rounded-pill">
+                                @livewire('includes.save-button', ['producto' => $producto])
+                                @livewire('includes.count-saved', ['producto' => $producto])
+                            </div>
                         </div>
-                        @livewire('includes.save-button', ['producto' => $producto])
                     </div>
                     @include('includes.productos.stock-alert', ['stock' => $producto->cantidad])
 

@@ -1,5 +1,10 @@
 {{-- Modal de imágenes del producto --}}
-<div class="modal fade modal-xl" id="galeriaModal" tabindex="-1" aria-labelledby="galeriaModalLabel" aria-hidden="true" x-data="galeria()" @keydown.right="siguiente()" @keydown.space="siguiente()" @keydown.left="anterior()">
+<div
+    class="modal fade modal-xl"
+    id="galeriaModal"
+    tabindex="-1"
+    aria-labelledby="galeriaModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-body position-relative">
@@ -10,7 +15,14 @@
                         <div class="carousel-indicators">
                             @foreach($producto->imagenes as $img)
                                 <div class="bg-dark bg-opacity-25">
-                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{$loop->index}}" class="{{ $loop->first ? 'active' : '' }}" aria-current="{{ $loop->first ? true : false }}" aria-label="Slide 1"></button>
+                                    <button
+                                        type="button"
+                                        data-bs-target="#carouselExampleIndicators"
+                                        data-bs-slide-to="{{$loop->index}}"
+                                        class="{{ $loop->first ? 'active' : '' }}"
+                                        aria-current="{{ $loop->first ? true : false }}"
+                                        aria-label="Slide 1">
+                                    </button>
                                 </div>
                             @endforeach
                         </div>
@@ -26,7 +38,12 @@
                                             isset($nombres[1]) ? $extension = $nombres[1] : $extension = '';
                                         @endphp
                                         @if($extension == 'mp4' || $extension == 'mpeg4')
-                                            <video src="{{ asset('storage/' . $imagen) }}" controls loop class="d-block" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="...">
+                                            <video
+                                                src="{{ asset('storage/' . $imagen) }}"
+                                                controls loop
+                                                class="d-block"
+                                                style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                                                alt="...">
                                                 Tu navegador no admite el elemento <code>video</code>.
                                             </video>
                                         @else
@@ -37,13 +54,20 @@
                             @endforeach
 
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon bg-dark rounded" aria-hidden="true"></span>
-                            <span class="visually-hidden">Anterior</span>
+                        <button
+                            class="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="prev">
+                            <span class="text-dark"><i class="bi bi-caret-left-fill fs-1"></i></span>
+
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                            <span class="carousel-control-next-icon bg-dark rounded" aria-hidden="true"></span>
-                            <span class="visually-hidden">Siguiente</span>
+                        <button
+                            class="carousel-control-next"
+                            type="button"
+                            data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="next">
+                            <span class="text-dark"><i class="bi bi-caret-right-fill fs-1"></i></span>
                         </button>
                     </div>
 
