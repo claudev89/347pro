@@ -13,26 +13,29 @@ class BuscarProducto extends Component
 
     public function registrarBusqueda($productoId)
     {
-        $busquedasCount = DB::table('busquedas')->where('user_id', auth()->id())->count();
+        if(auth()->user()) {
+            $busquedasCount = DB::table('busquedas')->where('user_id', auth()->id())->count();
 
-        if ($busquedasCount >= 10) {
-            DB::table('busquedas')
-                ->where('user_id', auth()->id())
-                ->orderBy('created_at', 'asc')
-                ->limit(1)
-                ->delete();
+            if ($busquedasCount >= 10) {
+                DB::table('busquedas')
+                    ->where('user_id', auth()->id())
+                    ->orderBy('created_at', 'asc')
+                    ->limit(1)
+                    ->delete();
+            }
+
+            DB::table('busquedas')->upsert(
+                [
+                    'user_id' => auth()->id(),
+                    'producto_id' => $productoId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                ['user_id' => auth()->id(), 'producto_id' => $productoId],
+                ['created_at', 'updated_at']
+            );
         }
 
-        DB::table('busquedas')->upsert(
-            [
-                'user_id' => auth()->id(),
-                'producto_id' => $productoId,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            ['user_id' => auth()->id(), 'producto_id' => $productoId],
-            ['created_at', 'updated_at']
-        );
         return redirect(Producto::findOrFail($productoId)->getUrl());
     }
 

@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
-//    public function show(Categoria $categoria, Categoria $subcategoria = null)
-//    {
-//        return view('categoria.show', compact('categoria', 'subcategoria'));
-//    }
-
     public function show($categoriaSlug, $subcategoriaOProductoSlug = null, $productoSlug = null)
     {
         // Buscar la categoría principal por slug
@@ -29,6 +24,8 @@ class CategoriaController extends Controller
             $producto = Producto::where('slug', $productoSlug)
                 ->where('categoria_id', $subcategoria->id)
                 ->firstOrFail();
+            $producto->visitas ++;
+            $producto->save();
 
             // Mostrar el producto en la subcategoría
             return view('producto.show', compact('producto'));
@@ -53,6 +50,8 @@ class CategoriaController extends Controller
 
             if ($producto) {
                 // Mostrar el producto en la categoría principal
+                $producto->visitas ++;
+                $producto->save();
                 return view('producto.show', compact('producto'));
             }
 

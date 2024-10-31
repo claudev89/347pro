@@ -1,5 +1,5 @@
 <div>
-    <h4 class="text-center">NOVEDADES</h4>
+    <h4 class="text-center mb-4">NOVEDADES</h4>
 
     <div class="container">
         <div class="row">
