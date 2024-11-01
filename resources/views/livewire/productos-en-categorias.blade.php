@@ -1,8 +1,12 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col-6">
-            Hay {{ $categoria->obtenerProductos()->count() }}
-            {{ $categoria->obtenerProductos()->count() === 1 ? 'producto.' : 'productos.' }}
+            Hay {{ $categoria ? $categoria->obtenerProductos()->count() : \App\Models\Producto::count() }}
+            @if($categoria)
+                {{ $categoria->obtenerProductos()->count() === 1 ? 'producto.' : 'productos.' }}
+            @else
+                {{ \App\Models\Producto::count() === 1 ? 'producto.' : 'productos.' }}
+            @endif
         </div>
         <div class="col-6 d-flex justify-content-end">
             <div class="row g-3 align-items-center">

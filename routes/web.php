@@ -24,13 +24,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-//Route::get('/{categoria}/{subcategoria}', [CategoriaController::class, 'show'])->name('categoria.show');
-//Route::get('/{categoria}/', [CategoriaController::class, 'show'])->name('categoria.show');
-//
-//Route::get('/{categoria}/{subcategoria}/{producto}', [ProductoController::class, 'show'])->name('producto.show');
-//Route::get('/{categoria}/{producto}', [ProductoController::class, 'show'])->name('producto.show');
-
-//Route::get('{slug1}/{slug2?}/{slug3?}', [UrlsController::class, 'show']);
+Route::get('productos', [ProductoController::class, 'index']);
 
 Route::get('/{categoria}/{subcategoriaOProducto?}/{producto?}', [CategoriaController::class, 'show'])
     ->where('categoria', '[a-zA-Z0-9-_]+')

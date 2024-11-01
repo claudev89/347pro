@@ -15,4 +15,9 @@ class ProductoController extends Controller
 
         return view('producto.show', compact('producto'));
     }
+
+    public function index()
+    {
+        return view('producto.index');
+    }
 }

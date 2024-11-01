@@ -7,7 +7,7 @@
                 @livewire('includes.producto-thumb', ['productoId' => $producto->id], key('nov-' . $producto->id))
             @endforeach
 
-            <a class="text-end text-body-tertiary btn" href="#"><h5 class="me-3">Todas las novedades ></h5></a>
+            <a class="text-end text-body-tertiary btn" href="/productos"><h5 class="me-3">Todas las novedades ></h5></a>
         </div>
 
     </div>
