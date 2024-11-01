@@ -17,9 +17,13 @@
                 <div id="marcas" class="bg-white px-3 py-4 mb-4">
                     <span class="fw-bold">MARCAS</span>
                     <ul style="list-style-type: none; padding-left: 0">
-                        <li>Marca 1</li>
-                        <li>Marca 2</li>
-                        <li>Marca n...</li>
+                        @foreach(\App\Models\Marca::all() as $marca)
+                            <li>
+                                <a href="{{ request()->fullUrlWithQuery(['marca' => $marca->slug]) }}" style="text-decoration: none">
+                                    {{$marca->nombre}}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

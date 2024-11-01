@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('slug', 80);
             $table->unsignedMediumInteger('precio');
             $table->unsignedSmallInteger('cantidad');
-            $table->unsignedBigInteger('marca_id')->nullable();
+            $table->unsignedBigInteger('marca_id');
             $table->string('descripcion_corta');
             $table->longText('descripcion_larga')->nullable();
             $table->unsignedBigInteger('categoria_id');
             $table->timestamps();
 
-            $table->foreign('marca_id')->references('id')->on('marcas')->nullOnDelete();
+            $table->foreign('marca_id')->references('id');
             $table->foreign('categoria_id')->references('id')->on('categorias');
         });
     }

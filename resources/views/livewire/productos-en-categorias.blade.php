@@ -1,12 +1,8 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col-6">
-            Hay {{ $categoria ? $categoria->obtenerProductos()->count() : \App\Models\Producto::count() }}
-            @if($categoria)
-                {{ $categoria->obtenerProductos()->count() === 1 ? 'producto.' : 'productos.' }}
-            @else
-                {{ \App\Models\Producto::count() === 1 ? 'producto.' : 'productos.' }}
-            @endif
+            Hay {{ $productos->total() }}
+            {{ $productos->total() === 1 ? 'producto.' : 'productos.' }}
         </div>
         <div class="col-6 d-flex justify-content-end">
             <div class="row g-3 align-items-center">
@@ -32,7 +28,7 @@
             @forelse($productos as $producto)
                 @livewire('includes.producto-thumb',  ['productoId' => $producto->id], key($producto->id))
             @empty
-                Todavía no hay productos en esta categoría.
+                No se encontraron productos.
             @endforelse
         </div>
 

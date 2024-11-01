@@ -99,7 +99,7 @@ class ProductoResource extends Resource
 
                         }),
 
-                    Select::make('marca')->relationship('marca', 'nombre')->placeholder('Ninguna')
+                    Select::make('marca')->relationship('marca', 'nombre')->required()
 
                 ])->columns(2)->columnSpan(2),
 

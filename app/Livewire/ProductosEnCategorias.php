@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Categoria;
+use App\Models\Marca;
 use App\Models\Producto;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,6 +17,8 @@ class ProductosEnCategorias extends Component
     public $direccion = 'desc';
     public $ordenSeleccionado = 'created_at_desc';
     public $porPagina = 12;
+
+    public $marca;
 
     public function mount($categoria = null)
     {
@@ -32,7 +35,9 @@ class ProductosEnCategorias extends Component
     protected $queryString = [
         'columnaAOrdenar' => ['except' => 'nombre'], // valor predeterminado
         'direccion' => ['except' => 'asc'],
-        'porPagina' => ['except' => 10],
+        'porPagina' => ['except' => 12],
+        'marca' => ['except' => null],
+
     ];
 
     public function render()
@@ -40,11 +45,20 @@ class ProductosEnCategorias extends Component
         if(isset($this->categoria)) {
             $productos = $this->categoria
                 ->obtenerProductos()
-                ->toQuery()
+                ->when($this->marca, function ($query) {
+                    return $query->whereHas('marca', function ($query) {
+                        $query->where('slug', $this->marca);
+                    });
+                })
                 ->orderBy($this->columnaAOrdenar, $this->direccion)
                 ->paginate($this->porPagina);
         } else {
-            $productos = Producto::all()->toQuery()->orderBy($this->columnaAOrdenar, $this->direccion)
+            $productos = Producto::when($this->marca, function ($query) {
+                return $query->whereHas('marca', function ($query) {
+                    $query->where('slug', $this->marca);
+                });
+            })
+                ->orderBy($this->columnaAOrdenar, $this->direccion)
                 ->paginate($this->porPagina);
         }
 

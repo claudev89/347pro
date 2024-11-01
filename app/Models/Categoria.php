@@ -85,13 +85,18 @@ class Categoria extends Model
 
     public function obtenerProductos()
     {
-        $productos = $this->productos;
-        if( $this->subcategorias->count() > 0) {
-            foreach ($this->subcategorias as $subcategoria) {
-                $productos = $productos->merge($subcategoria->productos);
-            }
-        }
-        return $productos;
+        return Producto::where('categoria_id', $this->id)
+            ->orWhereIn('categoria_id', $this->subcategorias->pluck('id'));
+    }
+
+
+    public function obtenerMarcas()
+    {
+        $marcas = Marca::whereHas('productos', function ($query) {
+            $query->whereIn('id', self::obtenerProductos()->pluck('id'));
+        })->get();
+
+        return $marcas;
     }
 
     public function getRouteKeyName()
