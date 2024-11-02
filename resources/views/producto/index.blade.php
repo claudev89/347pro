@@ -19,7 +19,7 @@
                     <ul style="list-style-type: none; padding-left: 0">
                         @foreach(\App\Models\Marca::all() as $marca)
                             <li>
-                                <a href="{{ request()->fullUrlWithQuery(['marca' => $marca->slug]) }}" style="text-decoration: none">
+                                <a class="text-reset fw-bold" href="{{ request()->fullUrlWithQuery(['marca' => $marca->slug]) }}" style="text-decoration: none">
                                     {{$marca->nombre}}
                                 </a>
                             </li>

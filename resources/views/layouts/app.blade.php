@@ -33,7 +33,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mb-1 py-0">
             <div class="container">
                 <div>
-                    <a href="#" class="text-reset" style="text-decoration: none"><strong>Contáctate con nosotros</strong></a>
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#contacto"><strong>Contáctate con nosotros</strong></button>
                 </div>
                 <div>
                     <!-- Right Side Of Navbar -->
@@ -184,6 +184,7 @@
          }
     </style>
     @livewire('includes.login-modal')
+    @livewire('contacto')
 
 </body>
 </html>
