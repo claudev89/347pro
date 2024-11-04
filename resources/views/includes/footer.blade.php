@@ -5,20 +5,7 @@
             <div class="col-4">
                 <h4>Infórmese de nuestras últimas noticias y ofertas especiales</h4>
             </div>
-            <div class="col-4">
-                <form class="row g-3">
-                    <div class="col-auto">
-                        <label for="correo" class="visually-hidden">Correo</label>
-                        <input type="text" class="form-control bg-white" id="correo" placeholder="Su dirección de correo electrónico">
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mb-3 text-white fw-bold px-3">SUSCRIBIRSE</button>
-                    </div>
-                </form>
-                <span class="small text-body-tertiary mt-0">
-                    Puede darse de baja en cualquier momento. Para ello, consulte nuestra información de contacto en aviso legal.
-                </span>
-            </div>
+            @livewire('includes.suscripcion-form')
         </div>
         <div class="row" id="linksInformativos">
             <div class="col-12 col-sm-3" id="Productos">
