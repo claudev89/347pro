@@ -1,6 +1,6 @@
 <div>
     <p>
-    Saludos. hemos recibido correctamente tu solicitud para suscribirte al Newsletter de 347pro.cl <br>
+    Saludos. hemos recibido correctamente tu solicitud para suscribirte al Newsletter de {{ config('app.name') }}. <br>
     Para hacer válida tu suscripción. Haz click en <a href="{{ route('activar.suscripcion', $hash) }}">este link</a>.
     </p>
 

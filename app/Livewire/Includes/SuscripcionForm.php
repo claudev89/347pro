@@ -4,8 +4,10 @@ namespace App\Livewire\Includes;
 
 use App\Mail\ContactoMailable;
 use App\Mail\SuscripcionMail;
+use App\Notifications\sendSubscriptionConfirmNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -43,7 +45,8 @@ class SuscripcionForm extends Component
                         $this->correo .
                         '</strong> en el cual debes confirmar tu suscripción.'
                 ]);
-            Mail::to($this->correo)->send(new SuscripcionMail($this->hash));
+            Notification::route('mail', $this->correo)
+                ->notify(new sendSubscriptionConfirmNotification($this->hash));
             return redirect(request()->header('Referer'));
         }
         catch (\Throwable $th) {

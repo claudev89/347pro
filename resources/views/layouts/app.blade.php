@@ -81,11 +81,7 @@
                                 </div>
                             </li>
                         @endguest
-                        <li class="nav-item ms-2 my-auto">
-                            <a class="nav-link text-dark" href="#">
-                                <i class="bi bi-cart3" style="-webkit-text-stroke: 1px"></i><strong> Carrito (0)</strong>
-                            </a>
-                        </li>
+                        @livewire('includes.carrito-label')
                     </ul>
                 </div>
             </div>

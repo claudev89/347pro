@@ -9,7 +9,7 @@ class SuscripcionController extends Controller
 {
     public function activarSuscripcion($hash)
     {
-        $registro = DB::table('suscripcions')->where('hash', $hash)->first()->exists();
+        $registro = DB::table('suscripcions')->where('hash', $hash)->exists();
 
         if($registro) {
             DB::table('suscripcions')->where('hash', $hash)->update(['hash' => null, 'updated_at' => now()]);

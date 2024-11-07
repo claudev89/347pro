@@ -71,19 +71,8 @@
                             {!! $descripcion !!}
                         </p>
 
-                        <form>
-                            <label for="cantidad-{{ $producto->id }}" class="form-label">Cantidad</label>
-                            <div class="row g-3 align-items-center">
-                                <div class="col-2 pe-0">
-                                    <input type="number" id="cantidad-{{ $producto->id }}" class="form-control" value="1" min="1">
-                                </div>
-                                <div class="col-auto">
-                                    <button type="submit" class="btn btn-primary text-white fw-bold {{ $producto->cantidad == 0 ? 'disabled' : '' }}">
-                                        <i class="bi bi-cart3" style="-webkit-text-stroke: 1px"></i> AÑADIR AL CARRITO
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        @livewire('includes.aniadir-al-carro', ['producto' => $producto])
+
                         @include('includes.productos.stock-alert', ['stock' => $stock])
                     </div>
                 </div>
