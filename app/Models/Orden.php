@@ -9,6 +9,8 @@ class Orden extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['user_id', 'estado'];
+
     public function usuario()
     {
         return $this->belongsTo(User::class);
@@ -16,7 +18,7 @@ class Orden extends Model
 
     public function productos()
     {
-        return $this->belongsToMany(Producto::class);
+        return $this->belongsToMany(Producto::class, 'orden_productos')->withPivot('cantidad');
     }
 
     public function boleta()

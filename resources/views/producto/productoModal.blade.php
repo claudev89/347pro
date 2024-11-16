@@ -71,7 +71,7 @@
                             {!! $descripcion !!}
                         </p>
 
-                        @livewire('includes.aniadir-al-carro', ['producto' => $producto])
+                        @livewire('includes.aniadir-al-carro', ['producto' => \App\Models\Producto::where('slug', $id)->first()])
 
                         @include('includes.productos.stock-alert', ['stock' => $stock])
                     </div>

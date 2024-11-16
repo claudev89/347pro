@@ -1,8 +1,52 @@
 <div>
-    <li class="nav-item ms-2 my-auto">
-        <a class="nav-link text-dark" href="#">
-            <i class="bi bi-cart3" style="-webkit-text-stroke: 1px"></i><strong> Carrito (0)</strong>
+    <li class="nav-item dropdown ms-2 my-auto">
+        <a class="nav-link text-dark {{ $totalProductos > 0 ? 'dropdown-toggle': '' }}"
+           href="#"
+           role="button"
+           data-bs-toggle="dropdown"
+           aria-haspopup="true"
+           aria-expanded="false"
+           v-pre>
+            <i class="bi bi-cart3" style="-webkit-text-stroke: 1px"></i><strong> Carrito ({{ $totalProductos }})</strong>
         </a>
+        <div class="dropdown-menu dropdown-menu-end position-absolute text-center" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" style="width: 24rem">
+                @if($totalProductos > 0)
+                    <div>
+                        @php($precioTotal = 0)
+                        @foreach($carrito as $productoCarrito)
+                            @php($productoEnCarrito = \App\Models\Producto::find($productoCarrito->producto_id))
+                            <div class="row align-items-center mb-1">
+                                <div id="imagen" class="col-1 p-0"><img src="{{ $productoEnCarrito->getPortada() }}" class="w-100"> </div>
+                                <div id="nombre" class="text-truncate text-start col-8">{{ $productoEnCarrito->nombre }}</div>
+                                <div id="cantidad" class="col-3">{{ $productoCarrito->cantidad }} x {{ number_format($productoEnCarrito->precio, 0, ',', '.') }} </div>
+                                @php($precioTotal += ($productoEnCarrito->precio * $productoCarrito->cantidad))
+                            </div>
+                        @endforeach
+                        <div class="row justify-content-end">
+                            <div class="col-auto">
+                                <hr class="my-0 px-0">
+                                <span class="fw-bold">Total: {{ number_format($precioTotal, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                        <hr class="m-0 p-0">
+                        <div class="row justify-content-center mt-0 pt-0">
+                            <div class="col-auto mt-0 pt-0">
+                                <a class="btn btn-sm btn-primary text-white" href="{{route('carrito')}}">
+                                    <i class="bi bi-cart4"></i> Ver Carrito
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    Aún no hay productos en el carrito de compras.
+                @endif
+            </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </div>
     </li>
 
     <div x-data="{ pageLoaded: false }"
@@ -29,17 +73,21 @@
 
                     <div class="row p-4">
                         <div id="infoProducto" class="col-12 col-md-5 d-flex align-items-center border-end">
-                            <div id="imagen" class="me-3">
+                            <div id="imagen" class="me-3 w-100">
                                 <img class="w-100" src="{{ $producto?->getPortada() }}" alt="{{ $producto?->nombre }}">
                             </div>
-                            <div id="info">
+                            <div id="info w-100">
                                 <h5 class="text-primary fw-bold">{{ $producto?->nombre }}</h5>
                                 $ {{ number_format($producto?->precio, 0, ',', '.') }}
                                 <p>Cantidad: <strong>{{ $cantidad }}</strong></p>
                             </div>
                         </div>
                         <div id="precio" class="col-12 col-md-7 px-3">
-                            <span class="fs-5 text-body-tertiary fw-bold mb-4"> Hay {{ $cantidad }} artículos en su carrito.</span>
+                            <span class="fs-5 text-body-tertiary fw-bold mb-4">
+                                Hay
+                                {{ session()->exists('carrito') ? array_sum(array_column(session()->get('carrito'), 1)) : 0 }}
+                                artículos en su carrito.
+                            </span>
 
                             <table class="table mt-3 w-100">
                                 <tr>
@@ -61,9 +109,9 @@
                 </div>
                 <div class="modal-footer bg-white">
                     <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Continuar comprando</button>
-                    <button type="button" class="btn btn-primary text-white fw-bold">
+                    <a type="button" class="btn btn-primary text-white fw-bold" href="{{ route('carrito') }}">
                         <i class="bi bi-check"></i> Finalizar compra
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

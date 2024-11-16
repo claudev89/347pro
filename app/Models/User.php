@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -91,5 +92,33 @@ class User extends Authenticatable
     public function valoraciones()
     {
         return $this->hasMany(Valoracion::class);
+    }
+
+    public function getCarrito()
+    {
+        if
+        (
+            auth()->check() &&
+            DB::table('ordens')
+                ->select()
+                ->where('user_id', auth()->id())
+                ->where('estado', 'pe')
+                ->exists()
+        )
+        {
+            $orden = DB::table('ordens')
+                ->select()
+                ->where('user_id', auth()->id())
+                ->where('estado', 'pe')
+                ->orderBy('created_at', 'desc')
+                ->first();
+            return DB::table('orden_productos')
+                ->select('producto_id', 'cantidad')
+                ->where('orden_id', $orden->id)
+                ->get()
+                ->toArray();
+        } else {
+            return null;
+        }
     }
 }

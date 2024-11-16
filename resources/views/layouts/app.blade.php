@@ -37,7 +37,7 @@
                 </div>
                 <div>
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto d-flex flex-row">
+                    <ul class="navbar-nav ms-auto d-flex flex-row align-items-center">
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

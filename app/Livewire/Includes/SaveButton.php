@@ -25,6 +25,7 @@ class SaveButton extends Component
                 ->where('producto_id', $this->producto->id)
                 ->delete();
             $this->saved = false;
+            $this->dispatch('saved-eliminado', productoId: $this->producto->id);
         } else {
             DB::table('productos_guardados')->insert([
                 'producto_id' => $this->producto->id,
@@ -33,8 +34,10 @@ class SaveButton extends Component
                 'updated_at' => now()
             ]);
             $this->saved = true;
+            $this->dispatch('saved-creado', productoId: $this->producto->id);
+
         }
-        $this->dispatch('saved-cambiado', $this->producto->id);
+        $this->dispatch('saved-cambiado', productoId: $this->producto->id);
     }
 
     #[On('saved-cambiado')]

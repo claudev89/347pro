@@ -10,3 +10,63 @@ $secondary: #F6F6F6;
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+
+.guardado {
+    color: transparent;
+    background-image: linear-gradient(180deg, var(--bs-secondary) 50%, var(--bs-danger) 50%);
+    background-position: 0 100%;
+    background-size: 100% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: gradient-animation 0.5s ease-in-out forwards;
+}
+
+@keyframes gradient-animation {
+    0% {background-position: 100% 0;}
+    100% {background-position: 100% 100%;}
+}
+
+.desguardado {
+    color: transparent;
+    background-image: linear-gradient(180deg, black 50%, var(--bs-danger) 50%);
+    background-position: 0 100%;
+    background-size: 100% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: gradient-animation-out 0.5s ease-in-out forwards;
+}
+
+@keyframes gradient-animation-out {
+    0% {background-position: 100% 100%;}
+    100% {background-position: 100% 0;}
+}
+
+.aumentado {
+    display: inline-block;
+    padding-top: 0.5rem;
+    overflow: hidden;
+    animation: slideInOut 1s ease-in-out;
+}
+
+@keyframes slideInOut {
+    0% {transform: translateY(0);opacity: 1;}
+    33% {transform: translateY(-40%);opacity: 0;}
+    66% {transform: translateY(100%);opacity: 0;}
+    67% {transform: translateY(50%);opacity: 1;}
+    100% {transform: translateY(0);opacity: 1;}
+}
+
+.disminuido {
+    display: inline-block;
+    padding-top: 0.5rem;
+    overflow: hidden;
+    animation: bajar 1s ease-in-out;
+}
+
+@keyframes bajar {
+    0% {transform: translateY(0);opacity: 1;}
+    33% {transform: translateY(40%);opacity: 0;}
+    66% {transform: translateY(-100%);opacity: 0;}
+    67% {transform: translateY(-50%);opacity: 1;}
+    100% {transform: translateY(0);opacity: 1;}
+}

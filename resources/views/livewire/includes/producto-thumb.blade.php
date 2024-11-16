@@ -19,7 +19,7 @@
                     </a>
                 @endif
 
-                    <div class="position-absolute z-2 end-0 mt-2 me-2">
+                    <div class="position-absolute z-2 end-0 mt-2 me-2" wire:key="svd-{{$producto->id}}">
                         @livewire('includes.save-button', ['producto' => $producto])
                     </div>
 
