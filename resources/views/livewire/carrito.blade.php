@@ -1,6 +1,6 @@
 <section class="container">
     @php($valorTotal = 0)
-    <div class="row">
+    <div class="row" x-on:cantidad-carrito-actualizada.window="$carrito = $event.detail.carrito">
         <div class="col-12 col-md-7 bg-white me-4 p-4 rounded mb-4">
             <h4>CARRITO</h4>
             <hr class="mt-0">
@@ -16,26 +16,31 @@
                             </a> <br>
                             <span class="fw-bold text-primary">{{ number_format($producto->precio, 0, ',', '.') }}</span>
                         </div>
-                        <div class="col-2 d-flex align-items-center" x-data="{cantidad: {{ $prod->cantidad }}}">
+                        <div class="col-2 d-flex align-items-center" x-data="{cantidad: {{ $prod->cantidad }}}" wire:key="qty-{{ $producto->id }}">
                             <div class="input-group" style="width: 4rem">
                                 <input
                                     class="form-control"
                                     type="text" aria-label="cantidad"
                                     x-model="cantidad"
+                                    x-on:input.debounce.300ms="
+                                        if( cantidad < 1) { cantidad = 1 }
+                                        if( cantidad > {{ $producto->cantidad }}) { cantidad = {{ $producto->cantidad }} }
+                                        $wire.actualizarCantidad({{ $producto->id }}, cantidad)
+                                        "
                                     maxlength="3">
                                 <div class="col-1 me-0 pe-0">
                                     <button
                                         class="btn btn-primary px-1 py-0 border text-white fw-bold"
                                         :class="cantidad === {{ $producto->cantidad }} ? 'disabled' : ''"
                                         style="width: 24px"
-                                        x-on:click.prevent="cantidad < {{ $producto->cantidad }} ? cantidad++ : cantidad = {{ $producto->cantidad }}">
+                                        x-on:click.prevent="cantidad < {{ $producto->cantidad }} ? cantidad++ : cantidad = {{ $producto->cantidad }}; $wire.actualizarCantidad({{ $producto->id }}, cantidad)">
                                         +
                                     </button>
                                     <button
                                         class="btn btn-primary px-1 py-0 border text-white fw-bold"
                                         :class="cantidad === 1 ? 'disabled' : ''"
                                         style="width: 24px"
-                                        x-on:click.prevent="cantidad > 1 ? cantidad-- : cantidad = 1">
+                                        x-on:click.prevent="cantidad > 1 ? cantidad-- : cantidad = 1; $wire.actualizarCantidad({{ $producto->id }}, cantidad)">
                                         -
                                     </button>
                                 </div>
@@ -43,7 +48,7 @@
                         </div>
                         <div class="col-3 d-flex align-items-center justify-content-end ms-4">
                             <span class="text-end fw-bold">${{ number_format($producto->precio * $prod->cantidad, 0, ',', '.') }}</span>
-                            <button class="btn"><i class="bi bi-trash-fill fs-5"></i></button>
+                            <button class="btn" wire:click="deleteItem({{ $producto->id }})"><i class="bi bi-trash-fill fs-5"></i></button>
                         </div>
                         @if(!$loop->last)<div><hr class="text-body-tertiary mt-3"></div>  @endif
                     @endforeach
@@ -60,32 +65,37 @@
                                 </a> <br>
                                 <span class="fw-bold text-primary">{{ number_format($producto->precio, 0, ',', '.') }}</span>
                             </div>
-                            <div class="col-2 d-flex align-items-center" x-data="{cantidad: {{ $carritoItem->cantidad }}}">
+                            <div class="col-2 d-flex align-items-center" x-data="{cantidad: {{ $carritoItem->cantidad }}}" wire:key="qty-{{ $producto->id }}">
                                 <div class="input-group" style="width: 4rem">
                                     <input
                                         class="form-control"
                                         type="text" aria-label="cantidad"
                                         x-model="cantidad"
+                                        x-on:input.debounce.300ms="
+                                        if( cantidad < 1) { cantidad = 1 }
+                                        if( cantidad > {{ $producto->cantidad }}) { cantidad = {{ $producto->cantidad }} }
+                                        $wire.actualizarCantidad({{ $producto->id }}, cantidad)
+                                        "
                                         maxlength="3">
                                     <div class="col-1 me-0 pe-0">
                                         <button
                                             class="btn btn-primary px-1 py-0 border text-white fw-bold"
                                             :class="cantidad === {{ $producto->cantidad }} ? 'disabled' : ''"
                                             style="width: 24px"
-                                            x-on:click.prevent="cantidad < {{ $producto->cantidad }} ? cantidad++ : cantidad = {{ $producto->cantidad }}">
+                                            x-on:click.prevent="cantidad < {{ $producto->cantidad }} ? cantidad++ : cantidad = {{ $producto->cantidad }}; $wire.actualizarCantidad({{ $producto->id }}, cantidad)">
                                             +
                                         </button>
                                         <button
                                             class="btn btn-primary px-1 py-0 border text-white fw-bold"
                                             :class="cantidad === 1 ? 'disabled' : ''"
                                             style="width: 24px"
-                                            x-on:click.prevent="cantidad > 1 ? cantidad-- : cantidad = 1">
+                                            x-on:click.prevent="cantidad > 1 ? cantidad-- : cantidad = 1; $wire.actualizarCantidad({{ $producto->id }}, cantidad)">
                                             -
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-3 d-flex align-items-center justify-content-end ms-4">
+                            <div wire:click="deleteItem({{ $producto->id }})" class="col-3 d-flex align-items-center justify-content-end ms-4">
                                 <span class="text-end fw-bold">${{ number_format($producto->precio * $carritoItem->cantidad, 0, ',', '.') }}</span>
                                 <button class="btn"><i class="bi bi-trash-fill fs-5"></i></button>
                             </div>
@@ -120,7 +130,15 @@
                             <div>TOTAL</div>
                             <div>${{ number_format($valorTotal, 0, ',', '.') }}</div>
                         </div>
-                        <button class="btn btn-primary text-white fw-bold mt-4 w-100">FINALIZAR COMPRA</button>
+                        <a class="btn btn-primary text-white fw-bold mt-4 w-100"
+                        @if(auth()->check())
+                            wire:click="finalizarCompra"
+                        @else
+                            href="{{ route('register') }}"
+                        @endif
+                        >
+                            FINALIZAR COMPRA
+                        </a>
                     </div>
                 </div>
             @endif

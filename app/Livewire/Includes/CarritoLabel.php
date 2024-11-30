@@ -19,6 +19,7 @@ class CarritoLabel extends Component
         $this->cantidad = $cantidad;
     }
 
+    #[On('cantidad-carrito-actualizada')]
     public function render()
     {
         if(auth()->check() && auth()->user()->getCarrito()) {

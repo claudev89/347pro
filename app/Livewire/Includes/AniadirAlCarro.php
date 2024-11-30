@@ -3,6 +3,7 @@
 namespace App\Livewire\Includes;
 
 use App\Models\Producto;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -83,26 +84,40 @@ class AniadirAlCarro extends Component
     private function guardarCarrito($carrito)
     {
         if (auth()->check()) {
-            // Guardar el carrito en la base de datos asociado al usuario autenticado
-            $orden = auth()->user()->getCarrito();
+            // Obtener la orden pendiente o crear una nueva
+            $orden = DB::table('ordens')
+                ->where('user_id', auth()->id())
+                ->where('estado', 'pe')
+                ->orderBy('created_at', 'desc')
+                ->first();
 
             if (!$orden) {
-                // Crear una nueva orden pendiente si no existe
-                $orden = auth()->user()->ordenes()->create(['estado' => 'pe']);
+                $ordenId = DB::table('ordens')->insertGetId([
+                    'user_id' => auth()->id(),
+                    'estado' => 'pe',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } else {
+                $ordenId = $orden->id;
             }
 
-            // Sincronizar productos en la orden
-            $productos = [];
+            // Actualizar productos en la tabla 'orden_productos'
+            DB::table('orden_productos')->where('orden_id', $ordenId)->delete();
             foreach ($carrito as $item) {
-                $productos[$item->producto_id] = ['cantidad' => $item->cantidad];
+                DB::table('orden_productos')->insert([
+                    'orden_id' => $ordenId,
+                    'producto_id' => $item->producto_id,
+                    'cantidad' => $item->cantidad,
+                ]);
             }
-            $orden->productos()->sync($productos);
 
         } else {
             // Guardar el carrito en la sesión
             session(['carrito' => $carrito]);
         }
     }
+
 
     public function render()
     {

@@ -84,9 +84,7 @@
                         </div>
                         <div id="precio" class="col-12 col-md-7 px-3">
                             <span class="fs-5 text-body-tertiary fw-bold mb-4">
-                                Hay
-                                {{ session()->exists('carrito') ? array_sum(array_column(session()->get('carrito'), 1)) : 0 }}
-                                artículos en su carrito.
+                                Hay {{ $totalProductos }} artículos en su carrito.
                             </span>
 
                             <table class="table mt-3 w-100">

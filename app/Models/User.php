@@ -96,29 +96,35 @@ class User extends Authenticatable
 
     public function getCarrito()
     {
-        if
-        (
+        if (
             auth()->check() &&
             DB::table('ordens')
-                ->select()
                 ->where('user_id', auth()->id())
                 ->where('estado', 'pe')
                 ->exists()
-        )
-        {
+        ) {
+            // Recuperar la orden pendiente más reciente
             $orden = DB::table('ordens')
-                ->select()
                 ->where('user_id', auth()->id())
                 ->where('estado', 'pe')
                 ->orderBy('created_at', 'desc')
                 ->first();
-            return DB::table('orden_productos')
-                ->select('producto_id', 'cantidad')
+
+            // Transformar los productos relacionados en una colección de objetos
+            $productos = DB::table('orden_productos')
                 ->where('orden_id', $orden->id)
                 ->get()
+                ->map(fn($item) => (object) [
+                    'producto_id' => $item->producto_id,
+                    'cantidad' => $item->cantidad,
+                ])
                 ->toArray();
+
+            return $productos;
         } else {
-            return null;
+            return [];
         }
     }
+
+
 }
