@@ -134,7 +134,9 @@
                         @if(auth()->check())
                             wire:click="finalizarCompra"
                         @else
-                            href="{{ route('register') }}"
+                           href="{{ route('login') }}"
+                           data-bs-toggle="modal"
+                           data-bs-target="#loginModal"
                         @endif
                         >
                             FINALIZAR COMPRA

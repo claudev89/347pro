@@ -119,25 +119,10 @@
                     {!! $producto->descripcion_corta !!}
                 </p>
 
-                <form class="mb-3">
-                    <label for="cantidad" class="col-form-label">Cantidad</label>
-                    <div class="row g-3 align-items-center">
-                        <div class="col-auto pe-1">
-                            <input type="number" id="cantidad" class="form-control bg-white" aria-describedby="cantidad" max="99" min="1" value="1">
-                        </div>
-                        <div class="col-auto ps-0">
-                            <button class="btn btn-primary text-white fw-bold {{ $producto->cantidad === 0 ? 'disabled' : '' }}">
-                                <i class="bi bi-cart4 fs-5"></i> AGREGAR AL CARRO
-                            </button>
-                            <div class="ms-2 bg-white border border-secondary d-inline-flex align-items-center px-2 rounded-pill">
-                                @livewire('includes.save-button', ['producto' => $producto])
-                                @livewire('includes.count-saved', ['producto' => $producto])
-                            </div>
-                        </div>
-                    </div>
+                <div class="mb-3" style="max-width: 20rem">
+                    @livewire('includes.aniadir-al-carro', ['producto' => \App\Models\Producto::where('slug', $producto->slug)->first()])
                     @include('includes.productos.stock-alert', ['stock' => $producto->cantidad])
-
-                </form>
+                </div>
 
                 <div class="mb-3">
                     <span class="fs-5">Compartir</span>
