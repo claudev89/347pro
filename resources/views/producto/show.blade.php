@@ -119,9 +119,13 @@
                     {!! $producto->descripcion_corta !!}
                 </p>
 
-                <div class="mb-3" style="max-width: 20rem">
+                <div class="mb-3 d-flex align-items-center" style="max-width: 26rem">
                     @livewire('includes.aniadir-al-carro', ['producto' => \App\Models\Producto::where('slug', $producto->slug)->first()])
                     @include('includes.productos.stock-alert', ['stock' => $producto->cantidad])
+                    <div class="bg-white border border-secondary d-inline-flex align-items-center px-2 rounded-pill mt-4">
+                        @livewire('includes.save-button', ['producto' => $producto])
+                        @livewire('includes.count-saved', ['producto' => $producto])
+                    </div>
                 </div>
 
                 <div class="mb-3">

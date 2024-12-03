@@ -30,6 +30,7 @@ Route::get('activar-suscripcion/{hash}', [\App\Http\Controllers\SuscripcionContr
     ->name('activar.suscripcion');
 
 Route::get('carrito', function () { return view('carrito'); })->name('carrito');
+Route::get('perfil', function () { return view('perfil'); })->name('perfil')->middleware('auth');
 
 Route::get('/{categoria}/{subcategoriaOProducto?}/{producto?}', [CategoriaController::class, 'show'])
     ->where('categoria', '[a-zA-Z0-9-_]+')
